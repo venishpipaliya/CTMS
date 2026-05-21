@@ -1,0 +1,82 @@
+// --------------------------------------------------
+// ADD USERS FORM STYLES (White Minimal Theme)
+// --------------------------------------------------
+
+$color-primary: #2C5EAD;    // Darker primary blue (Submit Button, Titles)
+$color-secondary: #1591DC;  // Bright secondary blue (Input Focus borders)
+$color-accent: #4BB8FA;     // Accent blue
+$color-soft-bg: #C4E2F5;    // Very soft light blue (Input highlights, icon circles)
+
+// Center form and limit its maximum width for standard screens
+.max-form-width {
+  max-width: 720px;
+}
+
+// Icon decoration circle
+.icon-circle {
+  width: 48px;
+  height: 48px;
+  
+  &.bg-soft-blue {
+    background-color: rgba($color-soft-bg, 0.4);
+  }
+  
+  &.text-primary-blue {
+    color: $color-primary;
+  }
+}
+
+// Clean minimal inputs & select controls
+.form-control, .form-select {
+  border-color: #e2e8f0;
+  font-size: 0.95rem;
+  transition: all 0.2s ease-in-out;
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($color-soft-bg, 0.4);
+    border-color: $color-secondary;
+  }
+  
+  &.is-invalid {
+    border-color: #dc3545;
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(#dc3545, 0.15);
+    }
+  }
+}
+
+// Beautiful transitional helper for the Manager block
+.manager-container {
+  transition: all 0.3s ease;
+  
+  // Highlighted state when active
+  &.bg-light {
+    background-color: rgba($color-soft-bg, 0.15) !important;
+    border-color: rgba($color-primary, 0.2) !important;
+  }
+
+  // Muted, dotted state when disabled
+  &.bg-light-disabled {
+    background-color: #fcfcfc !important;
+    border-color: #e2e8f0 !important;
+    opacity: 0.75;
+  }
+
+  &.border-dashed {
+    border: 1px dashed;
+  }
+}
+
+// Premium submit button styling
+.btn-primary {
+  background-color: $color-primary;
+  border-color: $color-primary;
+  transition: all 0.2s ease-in-out;
+  
+  &:hover, &:focus, &:active {
+    background-color: darken($color-primary, 7%) !important;
+    border-color: darken($color-primary, 7%) !important;
+    box-shadow: 0 4px 12px rgba($color-primary, 0.25) !important;
+  }
+}

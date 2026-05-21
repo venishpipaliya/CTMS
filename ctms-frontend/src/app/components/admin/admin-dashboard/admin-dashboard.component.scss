@@ -1,0 +1,79 @@
+// --------------------------------------------------
+// ADMIN DASHBOARD STYLES (White Minimal Theme)
+// --------------------------------------------------
+
+$color-primary: #2C5EAD;    // Darker primary blue
+$color-secondary: #1591DC;  // Bright secondary blue
+$color-accent: #4BB8FA;     // Accent blue
+$color-soft-bg: #C4E2F5;    // Very soft light blue
+
+// --- UPPER STATS CARDS ---
+.stat-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .stat-number {
+    color: $color-primary;
+  }
+
+  // Circular icon backing
+  .icon-circle {
+    width: 48px;
+    height: 48px;
+    
+    &.bg-soft-blue {
+      background-color: rgba($color-soft-bg, 0.4);
+    }
+    
+    &.text-primary-blue {
+      color: $color-primary;
+    }
+  }
+}
+
+// --- SEARCH & SORT CONTROLS ---
+.search-bar {
+  max-width: 250px;
+  
+  .input-group-text, .form-control {
+    border-color: #e9ecef;
+    font-size: 0.9rem;
+    
+    // Focus effect when typing
+    &:focus {
+      box-shadow: none;
+      border-color: $color-secondary;
+    }
+  }
+}
+
+// --- CUSTOM TABLE STYLING ---
+.custom-table {
+  thead th {
+    font-weight: 600;
+    border-bottom: 2px solid #f1f3f5;
+  }
+
+  tbody tr {
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #f8f9fa;
+    
+    // Row highlight hover effect
+    &:hover {
+      background-color: rgba($color-soft-bg, 0.15);
+    }
+  }
+
+  // Circular user initials avatar
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+    background-color: rgba($color-soft-bg, 0.4);
+    color: $color-primary;
+    font-size: 0.85rem;
+  }
+}

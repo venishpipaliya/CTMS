@@ -1,0 +1,114 @@
+// --------------------------------------------------
+// ADMIN SIDEBAR STYLES (White Minimal Theme)
+// --------------------------------------------------
+// This file uses the specific color palette requested,
+// organized in variables so it's super easy to read & edit!
+
+$color-primary: #2C5EAD;    // Darker primary blue (Branding, Active text, Primary badges)
+$color-secondary: #1591DC;  // Bright secondary blue (Hover highlight text/icons)
+$color-accent: #4BB8FA;     // Accent blue (Focus, subtle indicators)
+$color-soft-bg: #C4E2F5;    // Very soft light blue (Active backgrounds, Avatar bg)
+
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  transition: all 0.3s ease;
+
+  // Subtle border instead of strong shadows for a true clean/minimal look
+  border-color: #f1f3f5 !important;
+
+  // --- BRAND HEADER ---
+  .brand-logo {
+    border-color: #f1f3f5 !important;
+    
+    .logo-icon {
+      color: $color-primary;
+    }
+    
+    .brand-text {
+      color: $color-primary;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  // --- NAVIGATION LINKS ---
+  .nav-item {
+    .nav-link {
+      color: #6c757d !important; // Standard dark-grey text for unselected state
+      font-size: 0.95rem;
+      background: transparent;
+      transition: all 0.2s ease-in-out;
+
+      i {
+        color: #a0aec0; // Neutral muted color for icons
+        transition: color 0.2s ease-in-out;
+      }
+
+      // Hover State: Smooth soft-blue background highlight
+      &:hover {
+        background-color: rgba($color-soft-bg, 0.25);
+        color: $color-secondary !important;
+
+        i {
+          color: $color-secondary;
+        }
+      }
+
+      // Active/Selected State: Uses soft-blue background and deep-blue text
+      &.active {
+        background-color: rgba($color-soft-bg, 0.6) !important;
+        color: $color-primary !important;
+        font-weight: 600;
+
+        i {
+          color: $color-primary;
+        }
+
+        // Elegant active indicator bar on the left edge of the tab
+        position: relative;
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 20%;
+          height: 60%;
+          width: 4px;
+          background-color: $color-primary;
+          border-radius: 0 4px 4px 0;
+        }
+      }
+    }
+  }
+
+  // --- PROFILE FOOTER ---
+  .profile-section {
+    border-color: #f1f3f5 !important;
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      background-color: $color-soft-bg;
+      color: $color-primary;
+      font-size: 0.9rem;
+    }
+
+    .user-info {
+      .extra-small {
+        font-size: 0.75rem;
+      }
+    }
+
+    // Elegant minimalistic logout button
+    .hover-logout {
+      font-size: 0.9rem;
+      color: #e53e3e;
+      background: transparent;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: #fff5f5;
+        color: #c53030;
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+<div class="sidebar d-flex flex-column justify-content-between p-3 bg-white border-end h-100">
+  
+  <div>
+    <!-- Logo / Brand Header -->
+    <div class="brand-logo d-flex align-items-center mb-4 px-2 py-3 border-bottom">
+      <i class="bi bi-shield-lock-fill fs-3 me-2 logo-icon"></i>
+      <span class="brand-text fw-bold fs-5">CTMS Admin</span>
+    </div>
+
+    <!-- Navigation Menu Items -->
+    <ul class="nav nav-pills flex-column mb-auto">
+      
+      <!-- Dashboard Link -->
+      <li class="nav-item mb-2">
+        <a routerLink="/admin/admin-dashboard" 
+           routerLinkActive="active" 
+           [routerLinkActiveOptions]="{exact: true}" 
+           class="nav-link d-flex align-items-center py-2.5 px-3 rounded-3 text-secondary">
+          <i class="bi bi-grid-1x2-fill me-3 fs-5"></i>
+          <span class="fw-medium">Dashboard</span>
+        </a>
+      </li>
+
+      <!-- Add User Link -->
+      <li class="nav-item mb-2">
+        <a routerLink="/admin/add-users" 
+           routerLinkActive="active" 
+           [routerLinkActiveOptions]="{exact: true}" 
+           class="nav-link d-flex align-items-center py-2.5 px-3 rounded-3 text-secondary">
+          <i class="bi bi-person-plus-fill me-3 fs-5"></i>
+          <span class="fw-medium">Add User</span>
+        </a>
+      </li>
+
+      <!-- Manage Users Link -->
+      <li class="nav-item mb-2">
+        <a routerLink="/admin/edit-users" 
+           routerLinkActive="active" 
+           [routerLinkActiveOptions]="{exact: true}" 
+           class="nav-link d-flex align-items-center py-2.5 px-3 rounded-3 text-secondary">
+          <i class="bi bi-people-fill me-3 fs-5"></i>
+          <span class="fw-medium">Manage Users</span>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+
+  <!-- Profile & Logout Section -->
+  <div class="profile-section border-top pt-3">
+    <div class="d-flex align-items-center px-2 mb-3">
+      <!-- Minimal Avatar badge using our soft blue color -->
+      <div class="avatar me-3 d-flex align-items-center justify-content-center fw-bold rounded-circle">
+        AM
+      </div>
+      <div class="user-info">
+        <h6 class="mb-0 text-dark fw-semibold small">{{ adminName }}</h6>
+        <span class="text-muted extra-small">{{ adminRole }}</span>
+      </div>
+    </div>
+    
+    <!-- Logout button with simple hover styling -->
+    <button class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center py-2 rounded-3 border-0 hover-logout">
+      <i class="bi bi-box-arrow-left me-2"></i>
+      Logout
+    </button>
+  </div>
+
+</div>

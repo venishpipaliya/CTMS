@@ -1,0 +1,152 @@
+<div class="container-fluid py-4">
+
+  <!-- Header Section -->
+  <div class="mb-4">
+    <h2 class="fw-bold text-dark mb-1">User Management</h2>
+    <p class="text-muted small">Create and register a new user in the system.</p>
+  </div>
+
+  <!-- Form Card Container -->
+  <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white max-form-width mx-auto">
+    
+    <!-- Title / Subtitle section -->
+    <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
+      <div class="icon-circle bg-soft-blue text-primary-blue rounded-circle d-flex align-items-center justify-content-center">
+        <i class="bi bi-person-plus-fill fs-4"></i>
+      </div>
+      <div>
+        <h5 class="fw-bold text-dark mb-0">Add New User</h5>
+        <span class="text-muted extra-small">Please fill in the form details below.</span>
+      </div>
+    </div>
+
+    <!-- Reactive Form -->
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="row g-4">
+        
+        <!-- First Name -->
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-semibold small text-secondary">First Name <span class="text-danger">*</span></label>
+          <input type="text" 
+                 class="form-control rounded-3 py-2" 
+                 placeholder="e.g. John"
+                 formControlName="firstName"
+                 [ngClass]="{'is-invalid': isControlInvalid('firstName')}">
+          <div class="invalid-feedback">
+            First name is required (minimum 2 characters).
+          </div>
+        </div>
+
+        <!-- Last Name -->
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-semibold small text-secondary">Last Name <span class="text-danger">*</span></label>
+          <input type="text" 
+                 class="form-control rounded-3 py-2" 
+                 placeholder="e.g. Doe"
+                 formControlName="lastName"
+                 [ngClass]="{'is-invalid': isControlInvalid('lastName')}">
+          <div class="invalid-feedback">
+            Last name is required (minimum 2 characters).
+          </div>
+        </div>
+
+        <!-- Email Address -->
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-semibold small text-secondary">Email Address <span class="text-danger">*</span></label>
+          <input type="email" 
+                 class="form-control rounded-3 py-2" 
+                 placeholder="e.g. john.doe@example.com"
+                 formControlName="email"
+                 [ngClass]="{'is-invalid': isControlInvalid('email')}">
+          <div class="invalid-feedback">
+            Please enter a valid email address.
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-semibold small text-secondary">Password <span class="text-danger">*</span></label>
+          <input type="password" 
+                 class="form-control rounded-3 py-2" 
+                 defaultValue="password123"
+                 formControlName="password"
+                 [ngClass]="{'is-invalid': isControlInvalid('password')}">
+          <div class="invalid-feedback">
+            Password is required (minimum 8 characters).
+          </div>
+        </div>
+
+        <!-- Department Selection (Looping Enum Values) -->
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-semibold small text-secondary">Department <span class="text-danger">*</span></label>
+          <select class="form-select rounded-3 py-2" 
+                  formControlName="department"
+                  [ngClass]="{'is-invalid': isControlInvalid('department')}">
+            <option value="" disabled selected>Select Department</option>
+            @for (dept of departments; track dept) {
+              <option [value]="dept">{{ dept }}</option>
+            }
+          </select>
+          <div class="invalid-feedback">
+            Please select a department.
+          </div>
+        </div>
+
+        <!-- Role Selection (Looping Enum Values) -->
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-semibold small text-secondary">Role <span class="text-danger">*</span></label>
+          <select class="form-select rounded-3 py-2" 
+                  formControlName="role"
+                  [ngClass]="{'is-invalid': isControlInvalid('role')}">
+            <option value="" disabled selected>Select Role</option>
+            @for (role of roles; track role) {
+              <option [value]="role">{{ role }}</option>
+            }
+          </select>
+          <div class="invalid-feedback">
+            Please select a user role.
+          </div>
+        </div>
+
+        <!-- Manager Selection (Conditional Box: enabled only when Role is Employee) -->
+        <div class="col-12">
+          <div class="manager-container p-3 rounded-3" 
+               [ngClass]="{'bg-light border': userForm.get('role')?.value === 'Employee', 'bg-light-disabled border-dashed': userForm.get('role')?.value !== 'Employee'}">
+            <label class="form-label fw-semibold small text-secondary">
+              Select Manager 
+              @if (userForm.get('role')?.value === 'Employee') {
+                <span class="text-danger">*</span>
+              } @else {
+                <span class="text-muted extra-small ms-1">(Only enabled for Employees)</span>
+              }
+            </label>
+            <select class="form-select rounded-3 py-2" 
+                    formControlName="managerId"
+                    [ngClass]="{'is-invalid': isControlInvalid('managerId')}">
+              <option value="" disabled selected>Choose Manager...</option>
+              @for (manager of managers; track manager.id) {
+                <option [value]="manager.id">
+                  {{ manager.name || (manager.firstName + ' ' + manager.lastName + ' - ' + manager.department) }}
+                </option>
+              }
+            </select>
+            <div class="invalid-feedback">
+              Manager selection is required for employee accounts.
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="col-12 pt-3">
+          <button type="submit" class="btn btn-primary w-100 rounded-3 py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2">
+            <i class="bi bi-check-circle-fill"></i>
+            Register User
+          </button>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+
+</div>
