@@ -2,22 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AdminServices } from '../../services/admin/admin.services'; // Inject the admin services
+import { Department } from '../../enum/department';
+import { UserRole } from '../../enum/role';
 
-// Department Enum definition
-export enum Department {
-  Engineering = 'Engineering',
-  HR = 'HR',
-  Finance = 'Finance',
-  Sales = 'Sales',
-  Marketing = 'Marketing'
-}
-
-// Role Enum definition
-export enum Role {
-  Admin = 'Admin',
-  Manager = 'Manager',
-  Employee = 'Employee'
-}
 
 @Component({
   selector: 'app-add-users',
@@ -31,7 +18,7 @@ export class AddUsersComponent implements OnInit {
   
   // Convert enums to array for easy loop rendering in HTML
   departments = Object.values(Department);
-  roles = Object.values(Role);
+  roles = Object.values(UserRole);
   
   // Stores list of managers fetched from API
   managers: any[] = [];
@@ -85,7 +72,7 @@ export class AddUsersComponent implements OnInit {
       role: ['', Validators.required],
       // Store the unique ID of the selected manager
       managerId: [{ value: '', disabled: true }],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['Password123', [Validators.required, Validators.minLength(8)]]
     });
   }
 
@@ -94,7 +81,7 @@ export class AddUsersComponent implements OnInit {
     this.userForm.get('role')?.valueChanges.subscribe((selectedRole: string) => {
       const managerCtrl = this.userForm.get('managerId');
       
-      if (selectedRole === Role.Employee) {
+      if (selectedRole === UserRole.EMPLOYEE) {
         // If the role is Employee, enable manager control and make it required
         managerCtrl?.enable();
         managerCtrl?.setValidators([Validators.required]);
@@ -117,27 +104,49 @@ export class AddUsersComponent implements OnInit {
 
   // Form submission handler
   onSubmit(): void {
-    this.isSubmitted = true;
+  this.isSubmitted = true;
 
-    if (this.userForm.valid) {
-      // Form is valid! We can fetch values (including disabled ones if we use getRawValue())
-      const formData = this.userForm.getRawValue();
-      console.log('Form Submitted Successfully!', formData);
-      
-      // Success alert to guide the beginner user
-      alert(`User ${formData.firstName} ${formData.lastName} added successfully!`);
-      
-      // Reset form on success
-      this.userForm.reset();
-      this.isSubmitted = false;
-    } else {
-      console.log('Form is invalid. Please fix the validation errors.');
-    }
+  if (this.userForm.valid) {
+
+    // Get all values from form
+    const formData = this.userForm.getRawValue();
+
+    console.log('Sending data:', formData);
+
+    // Call backend API
+    this.adminService.saveNewUser(formData).subscribe({
+      next: (response: any) => {
+        console.log('User saved successfully:', response);
+
+        alert(
+          `User ${formData.firstName} ${formData.lastName} added successfully!`
+        );
+
+        // Reset form
+        this.userForm.reset();
+        this.isSubmitted = false;
+
+        // Disable manager again after reset
+        this.userForm.get('managerId')?.disable();
+      },
+
+      error: (err: any) => {
+        console.error('Error saving user:', err.error);
+
+        alert(err.error?.error);
+      }
+    });
+
+  } else {
+    console.log('Form is invalid');
   }
+}
 
   // Helper method to easily check validation states in HTML
   isControlInvalid(controlName: string): boolean {
     const control = this.userForm.get(controlName);
     return !!(control && control.invalid && (control.touched || this.isSubmitted));
   }
+
+  
 }

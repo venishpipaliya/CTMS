@@ -16,6 +16,6 @@ export class AdminServices {
 
   saveNewUser(obj:any) {
 
-    return this.http.post(this.apiUri + "saveNewUser", obj)
+    return this.http.post(this.apiUri + "create", obj)
   }
 }
