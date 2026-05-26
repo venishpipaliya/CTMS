@@ -18,4 +18,13 @@ export class AdminServices {
 
     return this.http.post(this.apiUri + "create", obj)
   }
+
+  updateUser(id: number, obj: any) {
+    return this.http.put(this.apiUri + "updateUser/" + id, obj)
+  }
+
+  deleteUser(id: number) {
+    return this.http.delete(this.apiUri + "deleteUser/" + id)
+  }
+  
 }

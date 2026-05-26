@@ -1,1 +1,274 @@
-<p>edit-users works!</p>
+<div class="container-fluid py-4">
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold text-dark mb-1">User Management</h2>
+      <p class="text-muted small mb-0">View, update, and delete registered users in the system.</p>
+    </div>
+    <div class="badge bg-soft-blue text-primary-blue fs-6 px-3 py-2 rounded-pill fw-semibold">
+      Total Users: {{ users.length }}
+    </div>
+  </div>
+  <!-- Users Table Card -->
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+    <div class="card-header bg-white border-bottom py-3 px-4">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-people-fill text-primary-blue fs-5"></i>
+        <h5 class="fw-bold text-dark mb-0">Registered Users List</h5>
+      </div>
+    </div>
+    
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light text-secondary small fw-semibold">
+          <tr>
+            <th class="py-3 px-4" style="width: 25%">Name</th>
+            <th class="py-3" style="width: 20%">Email</th>
+            <th class="py-3" style="width: 12%">Role</th>
+            <th class="py-3" style="width: 13%">Department</th>
+            <th class="py-3" style="width: 15%">Manager Name</th>
+            <th class="py-3 text-center" style="width: 8%">Status</th>
+            <th class="py-3 text-end px-4" style="width: 7%">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (users.length === 0) {
+            <tr>
+              <td colspan="7" class="text-center py-5">
+                <div class="text-muted">
+                  <i class="bi bi-person-x fs-1 d-block mb-2 text-secondary opacity-50"></i>
+                  <span>No users found in the system.</span>
+                </div>
+              </td>
+            </tr>
+          } @else {
+            @for (user of users; track user.id) {
+              <tr>
+                <!-- Name -->
+                <td class="py-3 px-4">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="avatar-circle rounded-circle bg-soft-blue text-primary-blue d-flex align-items-center justify-content-center fw-bold small">
+                      {{ user.firstName[0] }}{{ user.lastName[0] }}
+                    </div>
+                    <div>
+                      <span class="fw-semibold text-dark d-block lead-sm">{{ user.firstName }} {{ user.lastName }}</span>
+                      <span class="text-muted extra-small">ID: #{{ user.id }}</span>
+                    </div>
+                  </div>
+                </td>
+                
+                <!-- Email -->
+                <td class="py-3 text-secondary small">
+                  {{ user.email }}
+                </td>
+                
+                <!-- Role -->
+                <td class="py-3">
+                  <span class="badge rounded-pill px-2.5 py-1 fw-semibold extra-small"
+                        [ngClass]="{
+                          'bg-primary-blue-subtle text-primary-blue': user.role === 'ADMIN',
+                          'bg-secondary-blue-subtle text-secondary-blue': user.role === 'MANAGER',
+                          'bg-success-subtle text-success': user.role === 'FINANCE',
+                          'bg-light text-secondary border': user.role === 'EMPLOYEE'
+                        }">
+                    {{ user.role }}
+                  </span>
+                </td>
+                
+                <!-- Department -->
+                <td class="py-3 text-dark small">
+                  {{ user.department || '-' }}
+                </td>
+                
+                <!-- Manager Name -->
+                <td class="py-3 text-secondary small">
+                  {{ user.managerName || '-' }}
+                </td>
+                
+                <!-- Status (Active / Inactive) -->
+                <td class="py-3 text-center">
+                  @if (user.enabled) {
+                    <span class="badge bg-success-subtle text-success rounded-pill px-2.5 py-1 extra-small fw-semibold">
+                      Active
+                    </span>
+                  } @else {
+                    <span class="badge bg-danger-subtle text-danger rounded-pill px-2.5 py-1 extra-small fw-semibold">
+                      Inactive
+                    </span>
+                  }
+                </td>
+                
+                <!-- Actions -->
+                <td class="py-3 text-end px-4">
+                  <div class="d-flex gap-2 justify-content-end">
+                    <button class="btn btn-sm btn-icon btn-outline-primary" 
+                            title="Edit User" 
+                            (click)="openEditModal(user)">
+                      <i class="bi bi-pencil-square"></i>
+                    </button>
+                    <button class="btn btn-sm btn-icon btn-outline-danger" 
+                            title="Delete User" 
+                            (click)="onDelete(user.id, user.firstName, user.lastName)">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Bootstrap Edit Popup Modal -->
+  @if (showModal) {
+    <!-- Modal Backdrop -->
+    <div class="modal-backdrop fade show" (click)="closeModal()"></div>
+    <!-- Modal Container -->
+    <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow rounded-4 p-4 bg-white overflow-hidden animate-slide-up">
+          
+          <!-- Modal Header -->
+          <div class="d-flex justify-content-between align-items-center pb-3 border-bottom mb-4">
+            <div class="d-flex align-items-center gap-3">
+              <div class="icon-circle bg-soft-blue text-primary-blue rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bi bi-pencil-square fs-4"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold text-dark mb-0">Update User Details</h5>
+                <span class="text-muted extra-small">Edit the credentials and roles for the selected user.</span>
+              </div>
+            </div>
+            <button type="button" class="btn-close rounded-circle" (click)="closeModal()" aria-label="Close"></button>
+          </div>
+          <!-- Edit Reactive Form -->
+          <form [formGroup]="editForm" (ngSubmit)="onSubmit()" novalidate>
+            <div class="row g-4">
+              
+              <!-- First Name -->
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-semibold small text-secondary">First Name <span class="text-danger">*</span></label>
+                <input type="text" 
+                       class="form-control rounded-3 py-2" 
+                       placeholder="e.g. John"
+                       formControlName="firstName"
+                       [ngClass]="{'is-invalid': isControlInvalid('firstName')}">
+                <div class="invalid-feedback">
+                  First name is required (minimum 2 characters).
+                </div>
+              </div>
+              <!-- Last Name -->
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-semibold small text-secondary">Last Name <span class="text-danger">*</span></label>
+                <input type="text" 
+                       class="form-control rounded-3 py-2" 
+                       placeholder="e.g. Doe"
+                       formControlName="lastName"
+                       [ngClass]="{'is-invalid': isControlInvalid('lastName')}">
+                <div class="invalid-feedback">
+                  Last name is required (minimum 2 characters).
+                </div>
+              </div>
+              <!-- Email Address -->
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-semibold small text-secondary">Email Address <span class="text-danger">*</span></label>
+                <input type="email" 
+                       class="form-control rounded-3 py-2" 
+                       placeholder="e.g. john.doe@example.com"
+                       formControlName="email"
+                       [ngClass]="{'is-invalid': isControlInvalid('email')}">
+                <div class="invalid-feedback">
+                  Please enter a valid email address.
+                </div>
+              </div>
+              <!-- Status switch (Active / Inactive) -->
+              <div class="col-12 col-md-6 d-flex align-items-center">
+                <div class="form-check form-switch p-3 rounded border w-100 bg-light-subtle d-flex align-items-center justify-content-between">
+                  <div class="ms-1">
+                    <label class="form-check-label fw-semibold small text-dark d-block cursor-pointer" for="statusSwitch">
+                      Account Active Status
+                    </label>
+                    <span class="text-muted extra-small">Enable or disable this user account.</span>
+                  </div>
+                  <input class="form-check-input fs-5 me-1 cursor-pointer" 
+                         type="checkbox" 
+                         id="statusSwitch"
+                         formControlName="enabled">
+                </div>
+              </div>
+              <!-- Department Selection (Looping Enum Values) -->
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-semibold small text-secondary">Department <span class="text-danger">*</span></label>
+                <select class="form-select rounded-3 py-2" 
+                        formControlName="department"
+                        [ngClass]="{'is-invalid': isControlInvalid('department')}">
+                  <option value="" disabled selected>Select Department</option>
+                  @for (dept of departments; track dept) {
+                    <option [value]="dept">{{ dept }}</option>
+                  }
+                </select>
+                <div class="invalid-feedback">
+                  Please select a department.
+                </div>
+              </div>
+              <!-- Role Selection (Looping Enum Values) -->
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-semibold small text-secondary">Role <span class="text-danger">*</span></label>
+                <select class="form-select rounded-3 py-2" 
+                        formControlName="role"
+                        [ngClass]="{'is-invalid': isControlInvalid('role')}">
+                  <option value="" disabled selected>Select Role</option>
+                  @for (role of roles; track role) {
+                    <option [value]="role">{{ role }}</option>
+                  }
+                </select>
+                <div class="invalid-feedback">
+                  Please select a user role.
+                </div>
+              </div>
+              <!-- Manager Selection (Conditional Box: enabled only when Role is Employee) -->
+              <div class="col-12">
+                <div class="manager-container p-3 rounded-3" 
+                     [ngClass]="{'bg-light border': editForm.get('role')?.value === 'EMPLOYEE', 'bg-light-disabled border-dashed': editForm.get('role')?.value !== 'EMPLOYEE'}">
+                  <label class="form-label fw-semibold small text-secondary">
+                    Select Manager 
+                    @if (editForm.get('role')?.value === 'EMPLOYEE') {
+                      <span class="text-danger">*</span>
+                    } @else {
+                      <span class="text-muted extra-small ms-1">(Only enabled for Employees)</span>
+                    }
+                  </label>
+                  <select class="form-select rounded-3 py-2" 
+                          formControlName="managerId"
+                          [ngClass]="{'is-invalid': isControlInvalid('managerId')}">
+                    <option value="" disabled selected>Choose Manager...</option>
+                    @for (manager of managers; track manager.id) {
+                      <option [value]="manager.id">
+                        {{ manager.name || (manager.firstName + ' ' + manager.lastName + ' - ' + manager.department) }}
+                      </option>
+                    }
+                  </select>
+                  <div class="invalid-feedback">
+                    Manager selection is required for employee accounts.
+                  </div>
+                </div>
+              </div>
+              <!-- Action buttons -->
+              <div class="col-12 pt-3 d-flex gap-3">
+                <button type="button" class="btn btn-outline-secondary w-50 rounded-3 py-2.5 fw-semibold" (click)="closeModal()">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary w-50 rounded-3 py-2.5 fw-semibold d-flex align-items-center justify-content-center gap-2">
+                  <i class="bi bi-check-circle-fill"></i>
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+

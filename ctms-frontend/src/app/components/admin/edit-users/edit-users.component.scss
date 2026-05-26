@@ -1,0 +1,179 @@
+$color-primary: #2C5EAD;    // Darker primary blue (Submit Button, Titles)
+$color-secondary: #1591DC;  // Bright secondary blue (Input Focus borders)
+$color-accent: #4BB8FA;     // Accent blue
+$color-soft-bg: #C4E2F5;    // Very soft light blue (Input highlights, icon circles)
+// Avatar initials badge
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  font-size: 0.9rem;
+  background-color: rgba($color-soft-bg, 0.4);
+  color: $color-primary;
+  border-radius: 50%;
+  letter-spacing: 0.5px;
+}
+// Icon decoration circle in modal
+.icon-circle {
+  width: 48px;
+  height: 48px;
+  
+  &.bg-soft-blue {
+    background-color: rgba($color-soft-bg, 0.4);
+  }
+  
+  &.text-primary-blue {
+    color: $color-primary;
+  }
+}
+// Sleek Table Styles
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  
+  thead {
+    tr th {
+      background-color: #f8fafc;
+      color: #64748b;
+      font-weight: 600;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+  }
+  tbody {
+    tr {
+      transition: background-color 0.15s ease-in-out;
+      
+      &:hover {
+        background-color: rgba($color-soft-bg, 0.08);
+      }
+      
+      td {
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.92rem;
+      }
+    }
+  }
+}
+// Clean badge custom designs
+.bg-soft-blue {
+  background-color: rgba($color-soft-bg, 0.3);
+}
+.text-primary-blue {
+  color: $color-primary;
+}
+.bg-primary-blue-subtle {
+  background-color: rgba($color-primary, 0.1);
+}
+.bg-secondary-blue-subtle {
+  background-color: rgba($color-secondary, 0.1);
+}
+.text-secondary-blue {
+  color: $color-secondary;
+}
+.lead-sm {
+  font-size: 0.95rem;
+}
+.extra-small {
+  font-size: 0.78rem;
+}
+// Elegant circular buttons
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+// Clean minimal inputs & select controls
+.form-control, .form-select {
+  border-color: #e2e8f0;
+  font-size: 0.95rem;
+  transition: all 0.2s ease-in-out;
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($color-soft-bg, 0.4);
+    border-color: $color-secondary;
+  }
+  
+  &.is-invalid {
+    border-color: #dc3545;
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(#dc3545, 0.15);
+    }
+  }
+}
+// Modal Backdrop Overlay
+.modal-backdrop {
+  background-color: rgba(15, 23, 42, 0.4); // Dark blue-gray blur feel
+  backdrop-filter: blur(4px);
+  z-index: 1040;
+}
+// Modal Container Overrides
+.modal {
+  z-index: 1050;
+  background: transparent;
+}
+// Beautiful transitional helper for the Manager block
+.manager-container {
+  transition: all 0.3s ease;
+  
+  &.bg-light {
+    background-color: rgba($color-soft-bg, 0.15) !important;
+    border-color: rgba($color-primary, 0.2) !important;
+  }
+  &.bg-light-disabled {
+    background-color: #fcfcfc !important;
+    border-color: #e2e8f0 !important;
+    opacity: 0.75;
+  }
+  &.border-dashed {
+    border: 1px dashed;
+  }
+}
+// Modal close button hover animation
+.btn-close {
+  padding: 0.6rem;
+  background-color: #f1f5f9;
+  transition: all 0.2s ease-in-out;
+  
+  &:hover {
+    background-color: #e2e8f0;
+    transform: rotate(90deg);
+  }
+}
+// Premium primary buttons
+.btn-primary {
+  background-color: $color-primary;
+  border-color: $color-primary;
+  transition: all 0.2s ease-in-out;
+  
+  &:hover, &:focus, &:active {
+    background-color: darken($color-primary, 7%) !important;
+    border-color: darken($color-primary, 7%) !important;
+    box-shadow: 0 4px 12px rgba($color-primary, 0.25) !important;
+  }
+}
+// Slide-up animation for the modal
+.animate-slide-up {
+  animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
