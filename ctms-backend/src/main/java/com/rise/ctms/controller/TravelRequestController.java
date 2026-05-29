@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,10 @@ import lombok.RequiredArgsConstructor;
 public class TravelRequestController {
 	
 	private final TravelRequestServices travelRequestServices;
+	
+//	public TravelRequestController(TravelRequestServices travelRequestServices) {
+//		this.travelRequestServices = travelRequestServices;
+//	}
 
 	@PostMapping("/{id}/draft")
 	public ResponseEntity<ApiResponse<TravelResponseDto>> saveDraft(@PathVariable Long id ,@Valid @RequestBody TravelRequestDto dto){
@@ -34,14 +39,27 @@ public class TravelRequestController {
 				.body(ApiResponse.success(responseDto, "Draft request submitted successfully"));
 	}
 	
-	@PostMapping("/{id}/submit")
-	public ResponseEntity<ApiResponse<TravelResponseDto>> submitRequest(@PathVariable Long id){		TravelResponseDto responseDto = travelRequestServices.submitRequest(id);		return ResponseEntity.status(HttpStatus.OK)
-				.body(ApiResponse.success(responseDto, "Submitted successfully"));	}
+	@PutMapping("/{id}/update")
+	public ResponseEntity<ApiResponse<TravelResponseDto>> updateDraft(@PathVariable Long id ,@Valid @RequestBody TravelRequestDto dto){
+		TravelResponseDto responseDto = travelRequestServices.updateDraftRequest(dto, id);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(ApiResponse.success(responseDto, "Draft request updated successfully"));
+	}
+	
+	@PutMapping("/{id}/submit")
+	public ResponseEntity<ApiResponse<TravelResponseDto>> submitRequest(@PathVariable Long id){
+		TravelResponseDto responseDto = travelRequestServices.submitRequest(id);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(ApiResponse.success(responseDto, "Submitted successfully"));
+	}
 	
 	
-	@PostMapping("/{id}/cancle")
-	public ResponseEntity<ApiResponse<TravelResponseDto>> cancleRequest(@PathVariable Long id){		TravelResponseDto responseDto = travelRequestServices.cancleRequest(id);		return ResponseEntity.status(HttpStatus.OK)
-				.body(ApiResponse.success(responseDto, "Cancelled successfully"));	}
+	@PutMapping("/{id}/cancle")
+	public ResponseEntity<ApiResponse<TravelResponseDto>> cancleRequest(@PathVariable Long id){
+		TravelResponseDto responseDto = travelRequestServices.cancleRequest(id);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(ApiResponse.success(responseDto, "Cancelled successfully"));
+	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse<TravelResponseDto>> getRequestByEmployeeId(@PathVariable Long id){

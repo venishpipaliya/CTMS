@@ -18,7 +18,7 @@ spring:
   # ===========================================
   jpa:
     hibernate:
-      ddl-auto: validate          # Flyway owns the schema; JPA only verifies entities match
+      ddl-auto: update          # Flyway owns the schema; JPA only verifies entities match
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect

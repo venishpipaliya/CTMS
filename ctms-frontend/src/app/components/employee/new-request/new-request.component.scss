@@ -1,0 +1,98 @@
+// --------------------------------------------------
+// TRAVEL REQUEST FORM STYLES
+// --------------------------------------------------
+
+$color-primary: #2C5EAD;
+$color-secondary: #1591DC;
+$color-soft-bg: #C4E2F5;
+$gradient-header: linear-gradient(135deg, #2C5EAD 0%, #1591DC 100%);
+
+.form-card {
+  border: 1px solid #f1f3f5 !important;
+  
+  .form-header {
+    background: $gradient-header;
+  }
+}
+
+// Light background inputs for that minimal clean feel
+.bg-light-input {
+  background-color: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #334155 !important;
+  transition: all 0.2s ease-in-out;
+
+  &:focus {
+    background-color: #ffffff !important;
+    border-color: $color-secondary !important;
+    box-shadow: 0 0 0 4px rgba($color-soft-bg, 0.4) !important;
+  }
+
+  &::placeholder {
+    color: #94a3b8;
+  }
+}
+
+// Ensure pre-appended input icon matches theme on focus
+.input-group {
+  .form-control:focus + .input-group-text,
+  .form-control:focus ~ .input-group-text,
+  &:focus-within .input-group-text {
+    border-color: $color-secondary !important;
+    color: $color-primary !important;
+  }
+  
+  .input-group-text {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+// Custom Premium Save Draft Button
+.btn-save-draft {
+  background-color: $color-primary !important;
+  color: #ffffff !important;
+  border: none !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+  &:hover {
+    background-color: darken($color-primary, 5%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($color-primary, 0.3) !important;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Custom Clear/Back hover
+.hover-grey {
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: #f1f5f9 !important;
+    color: #475569 !important;
+  }
+}
+
+// Success Alert Animation
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.extra-small {
+  font-size: 0.8rem;
+}

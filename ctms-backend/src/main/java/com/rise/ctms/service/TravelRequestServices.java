@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import com.rise.ctms.dto.request.ApprovalRequestDto;
 import com.rise.ctms.dto.request.TravelRequestDto;
@@ -17,6 +18,7 @@ import com.rise.ctms.exception.ResourceConflictException;
 import com.rise.ctms.repository.TravelRequestRepository;
 import com.rise.ctms.repository.UserRepository;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
+@Validated
 public class TravelRequestServices {
 	
 	private final TravelRequestRepository travelRequestRepository;
@@ -41,6 +44,7 @@ public class TravelRequestServices {
 				.startDate(dto.getStartDate())
 				.endDate(dto.getEndDate())
 				.purpose(dto.getPurpose())
+				.travelClass(dto.getTravelClass())
 				.estimatedCost(dto.getEstimatedCost())
 				.status(RequestStatus.DRAFT)				
 				.build();		
@@ -50,6 +54,30 @@ public class TravelRequestServices {
 		log.info("Draft travel request created id={} employeeId={}", draftRequest.getId(), draftRequest.getEmployee().getId());
 		
 		return TravelResponseDto.from(draftRequest);
+	}
+	
+	public TravelResponseDto updateDraftRequest(@Valid TravelRequestDto dto, Long id) {
+		
+		TravelRequest travelRequest = travelRequestRepository.findById(id)
+				.orElseThrow(() -> new ResourceConflictException("Travel request not found with id: " + id));
+		
+		if (travelRequest.getStatus() != RequestStatus.DRAFT) {
+			throw new ResourceConflictException("Only draft requests can be updated. Current status: " + travelRequest.getStatus());
+		}
+		
+		travelRequest.setDestination(dto.getDestination());
+		travelRequest.setStartDate(dto.getStartDate());
+		travelRequest.setEndDate(dto.getEndDate());
+		travelRequest.setPurpose(dto.getPurpose());
+		travelRequest.setTravelClass(dto.getTravelClass());
+		travelRequest.setEstimatedCost(dto.getEstimatedCost());
+		travelRequest.setUpdatedAt(LocalDateTime.now());
+		
+		TravelRequest updatedDraft = travelRequestRepository.save(travelRequest);
+		
+		log.info("Draft travel request updated id={} employeeId={}", updatedDraft.getId(), updatedDraft.getEmployee().getId());
+		
+		return TravelResponseDto.from(updatedDraft);
 	}
 
 
@@ -69,6 +97,7 @@ public class TravelRequestServices {
 		
 		travelRequest.setStatus(RequestStatus.SUBMITTED);
 		travelRequest.setManagerApprover(employee.getManager());
+		travelRequest.setSubmittedAt(LocalDateTime.now());
 		travelRequest.setUpdatedAt(LocalDateTime.now());
 		
 		TravelRequest submitRequest = travelRequestRepository.save(travelRequest);
@@ -236,6 +265,9 @@ public TravelResponseDto cancleRequest(Long id) {
 				
 				return TravelResponseDto.from(approvedRequest);
 			}
+
+
+			
 	
 	
 

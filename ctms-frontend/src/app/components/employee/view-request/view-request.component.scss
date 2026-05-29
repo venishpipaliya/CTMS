@@ -1,0 +1,477 @@
+// --------------------------------------------------
+// EMPLOYEE TRAVEL REQUESTS SCSS (Premium Glassmorphism Theme)
+// --------------------------------------------------
+
+// Color System matching Sidebar & Premium Branding
+$color-primary: #2C5EAD;       // Dark Blue Primary
+$color-secondary: #1591DC;     // Secondary Blue
+$color-soft-bg: #C4E2F5;       // Soft Light Blue
+$color-accent: #4BB8FA;        // Accent Blue
+
+// Functional Colors
+$color-success: #27ae60;       // Forest Green
+$color-success-bg: rgba(#27ae60, 0.12);
+$color-warning: #d35400;       // Dark Orange / Warning
+$color-warning-bg: rgba(#d35400, 0.12);
+$color-danger: #c0392b;        // Red / Rejected
+$color-danger-bg: rgba(#c0392b, 0.12);
+$color-info: #2980b9;          // Cool Blue
+$color-info-bg: rgba(#2980b9, 0.12);
+
+$color-dark-blue: #1e3c72;
+$color-indigo: #4A00E0;
+$color-indigo-bg: rgba(#4A00E0, 0.08);
+
+// Transitions
+$transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+.employee-dashboard {
+  background-color: #fcfdfe;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: #2d3748;
+
+  // --- BRAND HEADER ---
+  .brand-header {
+    border-bottom: 2px solid #edf2f7 !important;
+    h1 {
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+  }
+
+  // --- BUTTON GRADIENTS ---
+  .btn-primary-gradient {
+    background: linear-gradient(135deg, $color-primary 0%, $color-secondary 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    transition: $transition-smooth;
+    box-shadow: 0 4px 15px rgba($color-primary, 0.25);
+
+    &:hover {
+      background: linear-gradient(135deg, darken($color-primary, 5%) 0%, darken($color-secondary, 5%) 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba($color-primary, 0.35);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  // --- STATISTICS CARDS SYSTEM ---
+  .stat-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+    transition: $transition-smooth;
+    z-index: 1;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: #e2e8f0;
+      transition: $transition-smooth;
+    }
+
+    // Card Specific Themes
+    &.card-total {
+      &::before { background: linear-gradient(90deg, $color-dark-blue, $color-primary); }
+      &:hover { border-color: rgba($color-primary, 0.3) !important; }
+    }
+    &.card-draft {
+      &::before { background: linear-gradient(90deg, #718096, #a0aec0); }
+      &:hover { border-color: rgba(#718096, 0.3) !important; }
+    }
+    &.card-pending {
+      &::before { background: linear-gradient(90deg, #f6ad55, $color-warning); }
+      &:hover { border-color: rgba($color-warning, 0.3) !important; }
+    }
+    &.card-approved {
+      &::before { background: linear-gradient(90deg, #48bb78, $color-success); }
+      &:hover { border-color: rgba($color-success, 0.3) !important; }
+    }
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.1);
+      background: rgba(255, 255, 255, 0.95);
+
+      .card-bg-glow {
+        opacity: 0.15;
+      }
+      
+      .icon-shape {
+        transform: scale(1.1) rotate(5deg);
+      }
+    }
+
+    .icon-shape {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: $transition-smooth;
+    }
+
+    .card-bg-glow {
+      position: absolute;
+      bottom: -50px;
+      right: -50px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, $color-soft-bg 0%, transparent 70%);
+      opacity: 0;
+      transition: $transition-smooth;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    // Color helpers
+    .text-indigo { color: $color-primary; }
+    .bg-indigo-soft { background-color: rgba($color-soft-bg, 0.4); }
+    
+    .text-secondary { color: #4a5568; }
+    .bg-secondary-soft { background-color: rgba(#edf2f7, 1); }
+    
+    .text-warning-custom { color: $color-warning; }
+    .bg-warning-soft { background-color: $color-warning-bg; }
+    
+    .text-success { color: $color-success; }
+    .bg-success-soft { background-color: $color-success-bg; }
+
+    .text-muted-custom {
+      color: #718096;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  // --- CONTROL BAR & SEARCH ---
+  .control-bar {
+    border-color: #f1f3f5 !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    .search-box {
+      .input-group-text {
+        border-color: #e2e8f0;
+      }
+      input {
+        border-color: #e2e8f0;
+        &:focus {
+          box-shadow: none;
+          border-color: $color-secondary;
+        }
+      }
+    }
+
+    .filter-tabs {
+      .filter-tab {
+        background: transparent;
+        color: #4a5568;
+        border: 1px solid transparent;
+        font-weight: 500;
+        transition: $transition-smooth;
+
+        &:hover {
+          background-color: rgba($color-soft-bg, 0.2);
+          color: $color-secondary;
+        }
+
+        &.active {
+          background-color: rgba($color-soft-bg, 0.6) !important;
+          color: $color-primary !important;
+          border-color: rgba($color-primary, 0.15) !important;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  // --- REQUESTS TABLE CARD ---
+  .table-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+
+    .custom-table {
+      thead {
+        background-color: #f7fafc;
+        border-bottom: 2px solid #edf2f7;
+        th {
+          font-weight: 700;
+          color: #4a5568;
+          text-transform: uppercase;
+          font-size: 0.78rem;
+          letter-spacing: 0.5px;
+        }
+      }
+
+      tbody {
+        tr {
+          transition: $transition-smooth;
+          
+          &:hover {
+            background-color: rgba($color-soft-bg, 0.15);
+            transform: translateX(4px);
+          }
+        }
+      }
+
+      .text-dark-blue {
+        color: $color-primary;
+      }
+
+      .text-muted-custom {
+        color: #718096;
+      }
+
+      .text-truncate-purpose {
+        max-width: 280px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+      }
+    }
+  }
+
+  // --- STATUS BADGES SYSTEM ---
+  .status-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: $transition-smooth;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+
+    &.status-draft {
+      background-color: rgba(#718096, 0.12);
+      color: #4a5568;
+      border: 1px solid rgba(#718096, 0.1);
+    }
+    &.status-submitted {
+      background-color: rgba($color-secondary, 0.12);
+      color: $color-primary;
+      border: 1px solid rgba($color-secondary, 0.1);
+    }
+    &.status-manager-approved {
+      background-color: rgba($color-accent, 0.12);
+      color: darken($color-secondary, 10%);
+      border: 1px solid rgba($color-accent, 0.1);
+    }
+    &.status-approved {
+      background-color: $color-success-bg;
+      color: $color-success;
+      border: 1px solid rgba($color-success, 0.1);
+    }
+    &.status-cancelled {
+      background-color: $color-danger-bg;
+      color: $color-danger;
+      border: 1px solid rgba($color-danger, 0.15);
+    }
+    &.status-rejected {
+      background-color: $color-warning-bg;
+      color: $color-warning;
+      border: 1px solid rgba($color-warning, 0.15);
+    }
+  }
+
+  // --- ACTION FLOATING BUTTONS ---
+  .btn-action {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    transition: $transition-smooth;
+    font-size: 0.95rem;
+
+    &:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &.btn-submit {
+      color: $color-primary;
+      background-color: rgba($color-primary, 0.08);
+      &:hover {
+        background-color: $color-primary;
+        color: white;
+      }
+    }
+
+    &.btn-edit {
+      color: $color-warning;
+      background-color: rgba($color-warning, 0.08);
+      &:hover {
+        background-color: $color-warning;
+        color: white;
+      }
+    }
+
+    &.btn-delete {
+      color: $color-danger;
+      background-color: rgba($color-danger, 0.08);
+      &:hover {
+        background-color: $color-danger;
+        color: white;
+      }
+    }
+
+    &.btn-ban {
+      color: $color-danger;
+      background-color: $color-danger-bg;
+      &:hover {
+        background-color: $color-danger;
+        color: white;
+      }
+    }
+
+    &.btn-view {
+      color: $color-info;
+      background-color: rgba($color-info, 0.08);
+      &:hover {
+        background-color: $color-info;
+        color: white;
+      }
+    }
+  }
+
+  // --- PREMIUM CUSTOM MODALS ---
+  .modal-backdrop-custom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(26, 32, 44, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1050;
+    transition: $transition-smooth;
+  }
+
+  .modal-container-custom {
+    width: 100%;
+    max-width: 520px;
+    background: white;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    z-index: 1060;
+    
+    .modal-header-custom {
+      border-color: #edf2f7 !important;
+      background-color: #f7fafc !important;
+    }
+
+    .form-control, .form-select {
+      border: 1px solid #cbd5e0;
+      transition: $transition-smooth;
+      font-size: 0.92rem;
+      
+      &:focus {
+        border-color: $color-secondary;
+        box-shadow: 0 0 0 3px rgba($color-secondary, 0.15);
+      }
+    }
+
+    textarea.form-control {
+      resize: none;
+    }
+
+    .alert-danger-custom {
+      background-color: $color-danger-bg;
+      color: $color-danger;
+      border-color: rgba($color-danger, 0.1);
+    }
+  }
+
+  // --- DETAILS TIMELINE REVIEW STYLES ---
+  .bg-light-gradient {
+    background: linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%);
+  }
+
+  .timeline-step {
+    padding-left: 8px;
+
+    .timeline-line {
+      position: absolute;
+      left: 17px;
+      top: 30px;
+      bottom: -15px;
+      width: 2px;
+      background-color: #cbd5e0;
+      border-style: dashed;
+    }
+
+    .timeline-indicator {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+      z-index: 2;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .border-dashed {
+      border: 1px dashed rgba(0, 0, 0, 0.08) !important;
+    }
+  }
+
+  // --- ANIMATIONS ---
+  .animate-scale-in {
+    animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .table-row-animate {
+    animation: slideInRow 0.25s ease-out forwards;
+  }
+
+  @keyframes scaleIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slideInRow {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

@@ -1,0 +1,290 @@
+<div class="container-fluid py-4 position-relative">
+  <div
+    class="card border-0 shadow-sm rounded-4 bg-white overflow-hidden form-card"
+  >
+    <!-- Header banner -->
+    <div
+      class="form-header p-4 text-white d-flex align-items-center justify-content-between"
+    >
+      <div>
+        <h3 class="fw-bold mb-1">New Travel Request</h3>
+        <p class="mb-0 text-white-50 small">
+          Initiate a corporate business trip request and save it as a draft.
+        </p>
+      </div>
+      <i class="bi bi-airplane-engines fs-1 text-white-50"></i>
+    </div>
+
+    <!-- Form body -->
+    <div class="card-body p-4 p-md-5">
+      <form [formGroup]="travelForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="row g-4">
+          <!-- Destination Field -->
+          <div class="col-md-6">
+            <label for="destination" class="form-label fw-semibold text-dark"
+              >Destination</label
+            >
+            <div class="input-group">
+              <span
+                class="input-group-text bg-light border-end-0 rounded-start-3 text-secondary"
+              >
+                <i class="bi bi-geo-alt-fill"></i>
+              </span>
+              <input
+                type="text"
+                id="destination"
+                formControlName="destination"
+                class="form-control bg-light-input border-start-0 rounded-end-3 py-2.5"
+                [ngClass]="{
+                  'is-invalid':
+                    travelForm.get('destination')?.invalid &&
+                    (travelForm.get('destination')?.dirty ||
+                      travelForm.get('destination')?.touched),
+                }"
+                placeholder="e.g. Delhi"
+              />
+
+              <div
+                class="invalid-feedback"
+                *ngIf="travelForm.get('destination')?.hasError('required')"
+              >
+                Destination is required.
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="travelForm.get('destination')?.hasError('minlength')"
+              >
+                Destination must be at least 3 characters.
+              </div>
+            </div>
+          </div>
+
+          <!-- Travel Class Field -->
+          <div class="col-md-6">
+            <label for="travelClass" class="form-label fw-semibold text-dark">
+              Travel Class
+            </label>
+
+            <div class="input-group">
+              <span
+                class="input-group-text bg-light border-end-0 rounded-start-3 text-secondary"
+              >
+                <i class="bi bi-airplane"></i>
+              </span>
+
+              <select
+                id="travelClass"
+                formControlName="travelClass"
+                class="form-select bg-light-input border-start-0 rounded-end-3 py-2.5"
+                [ngClass]="{
+                  'is-invalid':
+                    travelForm.get('travelClass')?.invalid &&
+                    (travelForm.get('travelClass')?.dirty ||
+                      travelForm.get('travelClass')?.touched),
+                }"
+              >
+                <option value="" disabled selected>Select travel class</option>
+                <option value="ECONOMY">Economy</option>
+                <option value="PREMIUM_ECONOMY">Premium Economy</option>
+                <option value="BUSINESS">Business</option>
+                <option value="FIRST_CLASS">First Class</option>
+              </select>
+
+              <div
+                class="invalid-feedback"
+                *ngIf="travelForm.get('travelClass')?.hasError('required')"
+              >
+                Travel class is required.
+              </div>
+            </div>
+          </div>
+
+          <!-- Estimated Cost Field -->
+          <div class="col-md-6">
+            <label for="estimatedCost" class="form-label fw-semibold text-dark"
+              >Estimated Cost ₹</label
+            >
+            <div class="input-group">
+              <span
+                class="input-group-text bg-light border-end-0 rounded-start-3 text-secondary"
+              >
+                <i class="bi bi-currency-rupee"></i>
+              </span>
+              <input
+                type="number"
+                id="estimatedCost"
+                formControlName="estimatedCost"
+                class="form-control bg-light-input border-start-0 rounded-end-3 py-2.5"
+                [ngClass]="{
+                  'is-invalid':
+                    travelForm.get('estimatedCost')?.invalid &&
+                    (travelForm.get('estimatedCost')?.dirty ||
+                      travelForm.get('estimatedCost')?.touched),
+                }"
+                placeholder="e.g. 15000"
+                min="1"
+              />
+
+              <div
+                class="invalid-feedback"
+                *ngIf="travelForm.get('estimatedCost')?.hasError('required')"
+              >
+                Estimated cost is required.
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="travelForm.get('estimatedCost')?.hasError('min')"
+              >
+                Estimated cost must be greater than 0.
+              </div>
+            </div>
+          </div>
+
+          <!-- Start Date Field -->
+          <div class="col-md-6">
+            <label for="startDate" class="form-label fw-semibold text-dark"
+              >Start Date</label
+            >
+            <div class="input-group">
+              <span
+                class="input-group-text bg-light border-end-0 rounded-start-3 text-secondary"
+              >
+                <i class="bi bi-calendar-event-fill"></i>
+              </span>
+              <input
+                type="date"
+                id="startDate"
+                formControlName="startDate"
+                class="form-control bg-light-input border-start-0 rounded-end-3 py-2.5"
+                [ngClass]="{
+                  'is-invalid':
+                    travelForm.get('startDate')?.invalid &&
+                    (travelForm.get('startDate')?.dirty ||
+                      travelForm.get('startDate')?.touched),
+                }"
+              />
+
+              <div
+                class="invalid-feedback"
+                *ngIf="travelForm.get('startDate')?.hasError('required')"
+              >
+                Start date is required.
+              </div>
+            </div>
+          </div>
+
+          <!-- End Date Field -->
+          <div class="col-md-6">
+            <label for="endDate" class="form-label fw-semibold text-dark"
+              >End Date</label
+            >
+            <div class="input-group">
+              <span
+                class="input-group-text bg-light border-end-0 rounded-start-3 text-secondary"
+              >
+                <i class="bi bi-calendar-check-fill"></i>
+              </span>
+              <input
+                type="date"
+                id="endDate"
+                formControlName="endDate"
+                class="form-control bg-light-input border-start-0 rounded-end-3 py-2.5"
+                [ngClass]="{
+                  'is-invalid':
+                    travelForm.get('endDate')?.invalid &&
+                    (travelForm.get('endDate')?.dirty ||
+                      travelForm.get('endDate')?.touched),
+                }"
+              />
+
+              <div
+                class="invalid-feedback"
+                *ngIf="travelForm.get('endDate')?.hasError('required')"
+              >
+                End date is required.
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="travelForm.get('endDate')?.hasError('dateLessThan')"
+              >
+                End date cannot be earlier than start date.
+              </div>
+            </div>
+          </div>
+
+          <!-- Purpose of Travel Field -->
+          <div class="col-12">
+            <label for="purpose" class="form-label fw-semibold text-dark"
+              >Purpose of Travel</label
+            >
+            <textarea
+              id="purpose"
+              formControlName="purpose"
+              class="form-control bg-light-input rounded-3 py-2.5"
+              rows="4"
+              [ngClass]="{
+                'is-invalid':
+                  travelForm.get('purpose')?.invalid &&
+                  (travelForm.get('purpose')?.dirty ||
+                    travelForm.get('purpose')?.touched),
+              }"
+              placeholder="Provide context about the business trip, meetings scheduled, clients visiting, etc."
+            ></textarea>
+
+            <div
+              class="invalid-feedback"
+              *ngIf="travelForm.get('purpose')?.hasError('required')"
+            >
+              Purpose of travel is required.
+            </div>
+            <div
+              class="invalid-feedback"
+              *ngIf="travelForm.get('purpose')?.hasError('maxlength')"
+            >
+              Purpose cannot exceed 500 characters.
+            </div>
+          </div>
+
+          <!-- Success Toast / Confirmation Alert -->
+
+          <div
+            *ngIf="showSuccessToast"
+            class="alert alert-success d-flex align-items-center justify-content-between rounded-3 shadow-sm mb-3"
+            role="alert"
+          >
+            <div class="d-flex align-items-center m-2">
+              <i class="bi bi-check-circle-fill me-2"></i>
+              <span>Draft saved successfully!</span>
+            </div>
+
+            <button
+              type="button"
+              class="btn-close"
+              (click)="showSuccessToast = false"
+            ></button>
+          </div>
+
+          <!-- Action Buttons -->
+          <div
+            class="col-12 border-top pt-4 d-flex justify-content-between align-items-center"
+          >
+            <button
+              type="button"
+              class="btn btn-link text-secondary text-decoration-none fw-medium py-2 rounded-3 hover-grey"
+              (click)="resetForm()"
+            >
+              <i class="bi bi-arrow-counterclockwise me-1"></i> Clear Form
+            </button>
+
+            <button
+              type="submit"
+              class="btn btn-save-draft px-4 py-2.5 rounded-3 fw-bold d-flex align-items-center shadow-sm"
+            >
+              <i class="bi bi-journal-check me-2 fs-5"></i> Save Draft
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
