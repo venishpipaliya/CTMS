@@ -23,7 +23,7 @@ public interface TravelRequestRepository extends JpaRepository<TravelRequest, Lo
 					on tr.employee_id = u.id
 					join users m
 					on tr.manager_approver_id = m.id
-					where tr.status = 'SUBMITTED'
+					where tr.status IN ('SUBMITTED', 'MANAGER_APPROVED', 'REJECTED')
 					And u.manager_id = :managerId """,
 			
 	nativeQuery = true)

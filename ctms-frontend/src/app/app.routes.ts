@@ -7,6 +7,9 @@ import { EmployeeLayoutComponent } from './components/layouts/employee-layout/em
 import { ViewRequestComponent } from './components/employee/view-request/view-request.component';
 import { EmployeeDashboardComponent } from './components/employee/employee-dashboard/employee-dashboard.component';
 import { NewRequestComponent } from './components/employee/new-request/new-request.component';
+import { ManagerLayoutComponent } from './components/layouts/manager-layout/manager-layout.component';
+import { ManagerApprovalComponent } from './components/manager/manager-approval/manager-approval.component';
+
 
 export const routes: Routes = [
   {
@@ -28,6 +31,15 @@ export const routes: Routes = [
       {path: 'employee-dashboard', component: EmployeeDashboardComponent },
       {path: 'view-request', component: ViewRequestComponent },
       {path: 'new-request', component: NewRequestComponent},
+    ],
+  },
+
+  {
+    path: 'manager',
+    component: ManagerLayoutComponent,
+    children: [
+      {path: '', redirectTo: 'manager-approval', pathMatch: 'full' },
+      {path: 'manager-approval', component: ManagerApprovalComponent },
     ],
   },
 ];

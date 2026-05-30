@@ -33,6 +33,8 @@ public class TravelResponseDto {
 	private Long financeId;
 	private String financeName;
 	private String financeEmail;
+	private String managerComments;
+	private String financeComments;
 	private LocalDateTime createdAt;
 	
 	
@@ -60,7 +62,9 @@ public class TravelResponseDto {
 								? travelRequest.getFinanceApprover().getFirstName() + " " +
 									travelRequest.getFinanceApprover().getLastName() : null)
 				.financeEmail(travelRequest.getFinanceApprover() != null ? travelRequest.getFinanceApprover().getEmail() : null)
-				.createdAt(travelRequest.getCreatedAt())				
+				.createdAt(travelRequest.getCreatedAt())	
+				.managerComments(travelRequest.getManagerComments())
+				.financeComments(travelRequest.getFinanceComments())
 				.build();
 	}
 	

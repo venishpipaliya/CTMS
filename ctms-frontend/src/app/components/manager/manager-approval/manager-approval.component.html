@@ -1,4 +1,4 @@
-<div class="container-fluid p-4 employee-dashboard">
+<div class="container-fluid p-4 manager-dashboard">
   
   <!-- Toast Notification -->
   <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1080;">
@@ -32,55 +32,28 @@
   <!-- Header Section -->
   <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom brand-header">
     <div>
-      <h1 class="h2 fw-bold text-primary mb-1">My Travel Requests</h1>
-      <p class="text-muted mb-0">Create, manage, and track your business travel requests.</p>
+      <h1 class="h2 fw-bold text-primary mb-1">Travel Approval Dashboard</h1>
+      <p class="text-muted mb-0">Review, approve, or reject employee business travel requests.</p>
     </div>
-    <button class="btn btn-primary-gradient px-4 py-2 rounded-3 shadow-sm d-flex align-items-center" (click)="createNewDraft()">
-      <i class="bi bi-plus-circle-fill me-2 fs-5"></i>
-      New Request
-    </button>
+    <div class="manager-context bg-light px-3 py-2 rounded-3 border d-flex align-items-center">
+      <div class="avatar-sm rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold me-2">
+        M
+      </div>
+      <div class="small">
+        <div class="fw-semibold text-dark">Manager Panel</div>
+        <span class="text-muted extra-small">Approving Authority</span>
+      </div>
+    </div>
   </div>
 
   <!-- Statistics Cards Row -->
   <div class="row g-4 mb-4">
-    <!-- Total Requests Card -->
-    <div class="col-12 col-md-6 col-lg-3">
-      <div class="stat-card card-total h-100 p-4 border-0 rounded-4 shadow-sm position-relative overflow-hidden">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <span class="text-muted-custom fw-semibold text-uppercase small">Total Requests</span>
-            <h2 class="fw-bold mt-2 mb-0 display-6 text-indigo">{{ stats.total }}</h2>
-          </div>
-          <div class="icon-shape bg-indigo-soft rounded-circle p-3">
-            <i class="bi bi-collection fs-3 text-indigo"></i>
-          </div>
-        </div>
-        <div class="card-bg-glow"></div>
-      </div>
-    </div>
-
-    <!-- Draft Requests Card -->
-    <div class="col-12 col-md-6 col-lg-3">
-      <div class="stat-card card-draft h-100 p-4 border-0 rounded-4 shadow-sm position-relative overflow-hidden">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <span class="text-muted-custom fw-semibold text-uppercase small">Drafts</span>
-            <h2 class="fw-bold mt-2 mb-0 display-6 text-secondary">{{ stats.draft }}</h2>
-          </div>
-          <div class="icon-shape bg-secondary-soft rounded-circle p-3">
-            <i class="bi bi-file-earmark-text fs-3 text-secondary"></i>
-          </div>
-        </div>
-        <div class="card-bg-glow"></div>
-      </div>
-    </div>
-
-    <!-- Pending Requests Card -->
-    <div class="col-12 col-md-6 col-lg-3">
+    <!-- Pending Review Card -->
+    <div class="col-12 col-md-4">
       <div class="stat-card card-pending h-100 p-4 border-0 rounded-4 shadow-sm position-relative overflow-hidden">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <span class="text-muted-custom fw-semibold text-uppercase small">Pending Approval</span>
+            <span class="text-muted-custom fw-semibold text-uppercase small">Pending Review</span>
             <h2 class="fw-bold mt-2 mb-0 display-6 text-warning-custom">{{ stats.pending }}</h2>
           </div>
           <div class="icon-shape bg-warning-soft rounded-circle p-3">
@@ -91,16 +64,32 @@
       </div>
     </div>
 
-    <!-- Approved Requests Card -->
-    <div class="col-12 col-md-6 col-lg-3">
+    <!-- Approved requests -->
+    <div class="col-12 col-md-4">
       <div class="stat-card card-approved h-100 p-4 border-0 rounded-4 shadow-sm position-relative overflow-hidden">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <span class="text-muted-custom fw-semibold text-uppercase small">Approved</span>
+            <span class="text-muted-custom fw-semibold text-uppercase small">Approved by Me</span>
             <h2 class="fw-bold mt-2 mb-0 display-6 text-success">{{ stats.approved }}</h2>
           </div>
           <div class="icon-shape bg-success-soft rounded-circle p-3">
-            <i class="bi bi-check-circle fs-3 text-success"></i>
+            <i class="bi bi-check-circle-fill fs-3 text-success"></i>
+          </div>
+        </div>
+        <div class="card-bg-glow"></div>
+      </div>
+    </div>
+
+    <!-- Rejected requests -->
+    <div class="col-12 col-md-4">
+      <div class="stat-card card-rejected h-100 p-4 border-0 rounded-4 shadow-sm position-relative overflow-hidden">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <span class="text-muted-custom fw-semibold text-uppercase small">Rejected by Me</span>
+            <h2 class="fw-bold mt-2 mb-0 display-6 text-danger">{{ stats.rejected }}</h2>
+          </div>
+          <div class="icon-shape bg-danger-soft rounded-circle p-3">
+            <i class="bi bi-x-circle-fill fs-3 text-danger"></i>
           </div>
         </div>
         <div class="card-bg-glow"></div>
@@ -118,7 +107,7 @@
         </span>
         <input type="text" 
                class="form-control bg-light border-start-0 py-2.5 ps-0" 
-               placeholder="Search by destination or purpose..." 
+               placeholder="Search by employee, destination, or purpose..." 
                [ngModel]="searchQuery"
                (ngModelChange)="searchRequests($event)">
         <button class="btn btn-outline-secondary bg-light border-start-0 text-muted" 
@@ -139,18 +128,13 @@
           All Requests
         </button>
         <button class="btn filter-tab px-3 py-2 rounded-3" 
-                [ngClass]="{'active': selectedStatusFilter === 'DRAFT'}" 
-                (click)="filterRequests('DRAFT')">
-          Drafts
+                [ngClass]="{'active': selectedStatusFilter === 'PENDING'}" 
+                (click)="filterRequests('PENDING')">
+          Pending Review
         </button>
         <button class="btn filter-tab px-3 py-2 rounded-3" 
-                [ngClass]="{'active': selectedStatusFilter === 'SUBMITTED'}" 
-                (click)="filterRequests('SUBMITTED')">
-          Pending
-        </button>
-        <button class="btn filter-tab px-3 py-2 rounded-3" 
-                [ngClass]="{'active': selectedStatusFilter === 'FINANCE_APPROVED'}" 
-                (click)="filterRequests('FINANCE_APPROVED')">
+                [ngClass]="{'active': selectedStatusFilter === 'APPROVED'}" 
+                (click)="filterRequests('APPROVED')">
           Approved
         </button>
         <button class="btn filter-tab px-3 py-2 rounded-3" 
@@ -158,25 +142,20 @@
                 (click)="filterRequests('REJECTED')">
           Rejected
         </button>
-        <button class="btn filter-tab px-3 py-2 rounded-3" 
-                [ngClass]="{'active': selectedStatusFilter === 'CANCELLED'}" 
-                (click)="filterRequests('CANCELLED')">
-          Cancelled
-        </button>
       </div>
     </div>
   </div>
 
-  <!-- Requests Table Grid Card -->
+  <!-- Submitted Requests Table Card -->
   <div class="card border-0 rounded-4 shadow-sm table-card overflow-hidden">
     <div class="card-body p-0">
       <div class="table-responsive">
         <table class="table table-hover align-middle mb-0 custom-table">
           <thead>
             <tr>
-              <th scope="col" class="ps-4 py-3">Request ID</th>
+              <th scope="col" class="ps-4 py-3">Employee Details</th>
               <th scope="col" class="py-3">Destination & Purpose</th>
-              <th scope="col" class="py-3">Dates</th>
+              <th scope="col" class="py-3">Dates & Class</th>
               <th scope="col" class="py-3">Estimated Cost</th>
               <th scope="col" class="py-3 text-center">Status</th>
               <th scope="col" class="pe-4 py-3 text-center">Actions</th>
@@ -188,27 +167,32 @@
               <td colspan="6" class="text-center py-5">
                 <div class="d-flex flex-column align-items-center py-4">
                   <div class="icon-empty mb-3">
-                    <i class="bi bi-folder-x display-3 text-muted"></i>
+                    <i class="bi bi-clipboard-x display-3 text-muted"></i>
                   </div>
-                  <h4 class="fw-semibold text-secondary">No Travel Requests Found</h4>
+                  <h4 class="fw-semibold text-secondary">No Submitted Requests</h4>
                   <p class="text-muted w-50 text-center">We couldn't find any travel requests matching your active filter tabs or search query.</p>
-                  <button class="btn btn-outline-primary mt-2 rounded-3 px-4" (click)="createNewDraft()">
-                    Create Draft Request
-                  </button>
                 </div>
               </td>
             </tr>
 
             <!-- Requests List -->
             <tr *ngFor="let req of filteredRequests" class="table-row-animate">
-              <!-- Request ID -->
-              <td class="ps-4 fw-bold text-dark-blue">
-                {{ req.id }}
+              <!-- Employee details -->
+              <td class="ps-4">
+                <div class="d-flex align-items-center">
+                  <div class="avatar-initials bg-light border text-dark-blue fw-bold rounded-circle me-3 d-flex align-items-center justify-content-center">
+                    {{ req.employeeName ? req.employeeName.charAt(0) : 'E' }}
+                  </div>
+                  <div class="d-flex flex-column">
+                    <span class="fw-bold text-dark fs-6">{{ req.employeeName }}</span>
+                    <span class="badge bg-soft-blue text-primary border extra-small mt-0.5 align-self-start">{{ req.employeeDepartment }}</span>
+                  </div>
+                </div>
               </td>
               <!-- Destination and Purpose -->
               <td>
                 <div class="d-flex flex-column">
-                  <span class="fw-semibold text-dark fs-6">{{ req.destination }}</span>
+                  <span class="fw-semibold text-dark">{{ req.destination }}</span>
                   <span class="text-muted small text-truncate-purpose mt-0.5">{{ req.purpose }}</span>
                 </div>
               </td>
@@ -219,24 +203,23 @@
                   <div class="d-flex flex-column small">
                     <span class="fw-semibold">{{ req.startDate | date:'mediumDate' }}</span>
                     <span class="text-muted-custom">to {{ req.endDate | date:'mediumDate' }}</span>
+                    <span class="badge bg-light text-muted border mt-0.5 align-self-start font-monospace extra-small">{{ req.travelClass }}</span>
                   </div>
                 </div>
               </td>
               <!-- Estimated Cost -->
-              <td class="fw-semibold text-dark">
-                {{ req.estimatedCost | currency:'INR':'symbol':'1.2-2' }}
-                <span class="badge bg-light text-muted border ms-1 font-monospace extra-small">{{ req.travelClass }}</span>
+              <td class="fw-bold text-dark fs-6">
+                {{ req.estimatedCost | currency:'INR' }}
               </td>
               <!-- Status Badge -->
               <td class="text-center">
                 <span class="status-badge" 
                       [ngClass]="{
-                        'status-draft': req.status?.toUpperCase() === 'DRAFT',
                         'status-submitted': req.status?.toUpperCase() === 'SUBMITTED',
                         'status-manager-approved': req.status?.toUpperCase() === 'MANAGER_APPROVED',
                         'status-approved': req.status?.toUpperCase() === 'FINANCE_APPROVED' || req.status?.toUpperCase() === 'COMPLETED',
-                        'status-cancelled': req.status?.toUpperCase() === 'CANCELLED',
-                        'status-rejected': req.status?.toUpperCase() === 'REJECTED'
+                        'status-rejected': req.status?.toUpperCase() === 'REJECTED',
+                        'status-cancelled': req.status?.toUpperCase() === 'CANCELLED'
                       }">
                   {{ 
                     req.status?.toUpperCase() === 'MANAGER_APPROVED' ? 'MGR APPROVED' :
@@ -248,42 +231,26 @@
               <!-- Actions -->
               <td class="pe-4 text-center">
                 <div class="d-flex justify-content-center gap-1.5">
-                  <!-- DRAFT actions -->
-                  <ng-container *ngIf="req.status?.toUpperCase() === 'DRAFT'">
-                    <button class="btn btn-action btn-submit" 
-                            title="Submit Request" 
-                            (click)="submitRequest(req.id)">
-                      <i class="bi bi-send-fill"></i>
-                    </button>
-                    <button class="btn btn-action btn-edit" 
-                            title="Edit Request" 
-                            (click)="openEditModal(req)">
-                      <i class="bi bi-pencil-fill"></i>
-                    </button>
-                    <button class="btn btn-action btn-delete" 
-                            title="Cancel Request" 
-                            (click)="cancelRequest(req.id)">
-                      <i class="bi bi-trash-fill"></i>
-                    </button>
-                  </ng-container>
-
-                  <!-- SUBMITTED actions -->
+                  <!-- Pending Action buttons -->
                   <ng-container *ngIf="req.status?.toUpperCase() === 'SUBMITTED'">
-                    <button class="btn btn-action btn-ban" 
-                            title="Cancel Request" 
-                            (click)="cancelRequest(req.id)">
-                      <i class="bi bi-ban"></i>
+                    <button class="btn btn-action btn-approve" 
+                            title="Approve Request" 
+                            (click)="openActionModal(req, 'APPROVE')">
+                      <i class="bi bi-check-circle-fill"></i>
+                    </button>
+                    <button class="btn btn-action btn-reject" 
+                            title="Reject Request" 
+                            (click)="openActionModal(req, 'REJECT')">
+                      <i class="bi bi-x-circle-fill"></i>
                     </button>
                   </ng-container>
 
-                  <!-- FINANCE_APPROVED/REJECTED/CANCELLED actions -->
-                  <ng-container *ngIf="req.status?.toUpperCase() !== 'DRAFT' && req.status?.toUpperCase() !== 'SUBMITTED'">
-                    <button class="btn btn-action btn-view" 
-                            title="View Details" 
-                            (click)="openDetailsModal(req)">
-                      <i class="bi bi-eye-fill"></i>
-                    </button>
-                  </ng-container>
+                  <!-- Processed details view button -->
+                  <button class="btn btn-action btn-view" 
+                          title="View Details" 
+                          (click)="openDetailsModal(req)">
+                    <i class="bi bi-eye-fill"></i>
+                  </button>
                 </div>
               </td>
             </tr>
@@ -294,119 +261,72 @@
   </div>
 
   <!-- ============================================ -->
-  <!-- INTERACTIVE EDIT MODAL                       -->
+  <!-- INTERACTIVE ACTION COMMENT MODAL            -->
   <!-- ============================================ -->
-  <div class="modal-backdrop-custom d-flex align-items-center justify-content-center" *ngIf="showEditModal">
-    <div class="modal-container-custom bg-white rounded-4 shadow-lg border overflow-hidden p-0 animate-scale-in">
+  <div class="modal-backdrop-custom d-flex align-items-center justify-content-center" *ngIf="showActionModal">
+    <div class="modal-container-custom bg-white rounded-4 shadow-lg border overflow-hidden p-0 animate-scale-in" 
+         [ngClass]="{
+           'border-approve': actionType === 'APPROVE',
+           'border-reject': actionType === 'REJECT'
+         }">
       <!-- Modal Header -->
       <div class="modal-header-custom d-flex justify-content-between align-items-center px-4 py-3 bg-light border-bottom">
-        <h5 class="modal-title fw-bold text-primary mb-0">
-          {{ selectedRequest ? 'Modify Travel Request (TR-' + selectedRequest.id + ')' : 'Create Draft Request' }}
+        <h5 class="modal-title fw-bold mb-0 d-flex align-items-center" 
+            [ngClass]="{
+              'text-success': actionType === 'APPROVE',
+              'text-danger': actionType === 'REJECT'
+            }">
+          <i class="bi me-2 fs-4" 
+             [ngClass]="actionType === 'APPROVE' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'"></i>
+          {{ actionType === 'APPROVE' ? 'Approve Travel Request' : 'Reject Travel Request' }}
         </h5>
-        <button type="button" class="btn-close" (click)="closeEditModal()"></button>
+        <button type="button" class="btn-close" (click)="closeActionModal()"></button>
       </div>
 
       <!-- Modal Body Form -->
-      <form [formGroup]="editForm" (ngSubmit)="saveEdit()" class="px-4 py-3.5">
-        <div class="row g-3">
-          <!-- Destination Input -->
-          <div class="col-12">
-            <label class="form-label fw-semibold text-dark small mb-1">Destination *</label>
-            <input type="text" 
-                   class="form-control rounded-3 py-2 px-3" 
-                   placeholder="e.g. London, United Kingdom"
-                   formControlName="destination"
-                   [ngClass]="{'is-invalid': editForm.get('destination')?.invalid && editForm.get('destination')?.touched}">
-            <div class="invalid-feedback">
-              Destination is required (max 200 characters).
-            </div>
+      <form [formGroup]="actionForm" (ngSubmit)="submitAction()" class="px-4 py-4">
+        <!-- Target Request Summary Card -->
+        <div class="request-summary-card mb-3.5 p-3 rounded-3 bg-light border-dashed">
+          <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+            <span class="fw-bold text-dark-blue small">TR-{{ selectedRequest?.id }}</span>
+            <span class="fw-bold text-dark small">{{ selectedRequest?.estimatedCost | currency:'INR' }}</span>
           </div>
-
-          <!-- Purpose Input -->
-          <div class="col-12">
-            <label class="form-label fw-semibold text-dark small mb-1">Purpose of Travel *</label>
-            <textarea class="form-control rounded-3 py-2 px-3" 
-                      rows="3"
-                      placeholder="Please clarify the business purpose of this trip..."
-                      formControlName="purpose"
-                      [ngClass]="{'is-invalid': editForm.get('purpose')?.invalid && editForm.get('purpose')?.touched}"></textarea>
-            <div class="invalid-feedback">
-              Purpose description is required (max 255 characters).
-            </div>
+          <div class="small">
+            <span class="text-muted-custom">Employee:</span> <strong class="text-dark">{{ selectedRequest?.employeeName }}</strong>
           </div>
-
-          <!-- Start Date -->
-          <div class="col-6">
-            <label class="form-label fw-semibold text-dark small mb-1">Start Date *</label>
-            <div class="input-group">
-              <span class="input-group-text bg-light border-end-0"><i class="bi bi-calendar"></i></span>
-              <input type="date" 
-                     class="form-control rounded-end-3 py-2 ps-2 pe-3 border-start-0" 
-                     formControlName="startDate"
-                     [ngClass]="{'is-invalid': (editForm.get('startDate')?.invalid || isDateRangeInvalid) && editForm.get('startDate')?.touched}">
-            </div>
-            <div class="text-danger extra-small mt-1" *ngIf="editForm.get('startDate')?.invalid && editForm.get('startDate')?.touched">
-              Start date is required.
-            </div>
+          <div class="small mt-1 text-truncate-summary">
+            <span class="text-muted-custom">Destination:</span> <span class="text-dark">{{ selectedRequest?.destination }}</span>
           </div>
+        </div>
 
-          <!-- End Date -->
-          <div class="col-6">
-            <label class="form-label fw-semibold text-dark small mb-1">End Date *</label>
-            <div class="input-group">
-              <span class="input-group-text bg-light border-end-0"><i class="bi bi-calendar"></i></span>
-              <input type="date" 
-                     class="form-control rounded-end-3 py-2 ps-2 pe-3 border-start-0" 
-                     formControlName="endDate"
-                     [ngClass]="{'is-invalid': (editForm.get('endDate')?.invalid || isDateRangeInvalid) && editForm.get('endDate')?.touched}">
-            </div>
-            <div class="text-danger extra-small mt-1" *ngIf="editForm.get('endDate')?.invalid && editForm.get('endDate')?.touched">
-              End date is required.
-            </div>
-          </div>
-
-          <!-- Date validation error banner -->
-          <div class="col-12" *ngIf="isDateRangeInvalid">
-            <div class="alert alert-danger-custom d-flex align-items-center py-2 px-3 rounded-3 extra-small border">
-              <i class="bi bi-exclamation-octagon-fill me-2 fs-6"></i>
-              Start Date must be earlier than or equal to End Date.
-            </div>
-          </div>
-
-          <!-- Estimated Cost -->
-          <div class="col-6">
-            <label class="form-label fw-semibold text-dark small mb-1">Estimated Cost (INR) *</label>
-            <div class="input-group">
-              <span class="input-group-text bg-light">₹</span>
-              <input type="number" 
-                     class="form-control py-2 px-3" 
-                     formControlName="estimatedCost"
-                     [ngClass]="{'is-invalid': editForm.get('estimatedCost')?.invalid && editForm.get('estimatedCost')?.touched}">
-            </div>
-            <div class="invalid-feedback">
-              Cost must be a positive value (₹1+).
-            </div>
-          </div>
-
-          <!-- Travel Class -->
-          <div class="col-6">
-            <label class="form-label fw-semibold text-dark small mb-1">Travel Class *</label>
-            <select class="form-select rounded-3 py-2 px-3" formControlName="travelClass">
-              <option value="Economy">Economy</option>
-              <option value="Premium Economy">Premium Economy</option>
-              <option value="Business">Business</option>
-              <option value="First Class">First Class</option>
-            </select>
+        <!-- Comments Textarea -->
+        <div class="col-12">
+          <label class="form-label fw-bold text-dark small mb-1.5">
+            Review Comments / Justification *
+          </label>
+          <textarea class="form-control rounded-3 py-2 px-3" 
+                    rows="3.5"
+                    placeholder="Enter approval reasons or rejection remarks..."
+                    formControlName="comment"
+                    [ngClass]="{'is-invalid': actionForm.get('comment')?.invalid && actionForm.get('comment')?.touched}"></textarea>
+          <div class="invalid-feedback">
+            Justification comment is mandatory (must be between 5 and 500 characters).
           </div>
         </div>
 
         <!-- Modal Actions Footer -->
         <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
-          <button type="button" class="btn btn-outline-secondary px-4 rounded-3" (click)="closeEditModal()">
+          <button type="button" class="btn btn-outline-secondary px-4 rounded-3" (click)="closeActionModal()">
             Cancel
           </button>
-          <button type="submit" class="btn btn-primary-gradient px-4 rounded-3" [disabled]="editForm.invalid || isDateRangeInvalid">
-            Save Changes
+          <button type="submit" 
+                  class="btn px-4 rounded-3" 
+                  [disabled]="actionForm.invalid"
+                  [ngClass]="{
+                    'btn-success-gradient text-white': actionType === 'APPROVE',
+                    'btn-danger-gradient text-white': actionType === 'REJECT'
+                  }">
+            Confirm {{ actionType === 'APPROVE' ? 'Approval' : 'Rejection' }}
           </button>
         </div>
       </form>
@@ -430,7 +350,22 @@
       <div class="px-4 py-4" *ngIf="selectedRequest">
         <div class="d-flex flex-column gap-3.5">
           
-          <!-- Basic Info grid -->
+          <!-- Employee Details Header card -->
+          <div class="employee-header-card p-3 rounded-4 bg-light border d-flex align-items-center">
+            <div class="avatar-lg bg-soft-blue text-primary border rounded-circle fw-bold fs-4 d-flex align-items-center justify-content-center me-3" style="width: 54px; height: 54px;">
+              {{ selectedRequest.employeeName ? selectedRequest.employeeName.charAt(0) : 'E' }}
+            </div>
+            <div>
+              <h5 class="fw-bold text-dark mb-0.5">{{ selectedRequest.employeeName }}</h5>
+              <div class="text-muted small d-flex flex-wrap align-items-center gap-2">
+                <span>{{ selectedRequest.employeeEmail }}</span>
+                <span class="text-light-muted">|</span>
+                <span class="fw-semibold text-primary">{{ selectedRequest.employeeDepartment }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Basic Travel Info Grid -->
           <div class="row g-3 border-bottom pb-3">
             <div class="col-6">
               <span class="text-muted-custom extra-small fw-semibold text-uppercase">Destination</span>
@@ -441,27 +376,30 @@
               <div class="mt-1">
                 <span class="status-badge" 
                       [ngClass]="{
-                        'status-draft': selectedRequest.status?.toUpperCase() === 'DRAFT',
                         'status-submitted': selectedRequest.status?.toUpperCase() === 'SUBMITTED',
                         'status-manager-approved': selectedRequest.status?.toUpperCase() === 'MANAGER_APPROVED',
                         'status-approved': selectedRequest.status?.toUpperCase() === 'FINANCE_APPROVED' || selectedRequest.status?.toUpperCase() === 'COMPLETED',
-                        'status-cancelled': selectedRequest.status?.toUpperCase() === 'CANCELLED',
-                        'status-rejected': selectedRequest.status?.toUpperCase() === 'REJECTED'
+                        'status-rejected': selectedRequest.status?.toUpperCase() === 'REJECTED',
+                        'status-cancelled': selectedRequest.status?.toUpperCase() === 'CANCELLED'
                       }">
-                  {{ selectedRequest.status?.toUpperCase() === 'FINANCE_APPROVED' ? 'APPROVED' : selectedRequest.status }}
+                  {{ 
+                    selectedRequest.status?.toUpperCase() === 'MANAGER_APPROVED' ? 'MGR APPROVED' :
+                    selectedRequest.status?.toUpperCase() === 'FINANCE_APPROVED' ? 'APPROVED' : 
+                    selectedRequest.status 
+                  }}
                 </span>
               </div>
             </div>
             
             <div class="col-6">
-              <span class="text-muted-custom extra-small fw-semibold text-uppercase">Dates</span>
+              <span class="text-muted-custom extra-small fw-semibold text-uppercase">Travel Dates</span>
               <div class="fw-semibold text-dark-blue mt-0.5 small d-flex align-items-center">
                 <i class="bi bi-calendar-event text-primary me-2"></i>
                 {{ selectedRequest.startDate | date:'mediumDate' }} - {{ selectedRequest.endDate | date:'mediumDate' }}
               </div>
             </div>
             <div class="col-6">
-              <span class="text-muted-custom extra-small fw-semibold text-uppercase">Estimated Cost / Class</span>
+              <span class="text-muted-custom extra-small fw-semibold text-uppercase">Cost & Travel Class</span>
               <div class="fw-bold text-dark mt-0.5">
                 {{ selectedRequest.estimatedCost | currency:'INR' }}
                 <span class="badge bg-light text-muted border font-monospace extra-small ms-1">{{ selectedRequest.travelClass }}</span>
@@ -477,11 +415,11 @@
             </p>
           </div>
 
-          <!-- Approval Comments Workflow Section -->
+          <!-- Review Workflow timeline section -->
           <div class="d-flex flex-column gap-3 bg-light-gradient p-3.5 rounded-4 border">
             <h6 class="fw-bold text-primary-dark small mb-1 text-uppercase d-flex align-items-center">
               <i class="bi bi-shield-check me-2 text-primary"></i>
-              Approval Comments Workflow
+              Approval Workflow Timeline
             </h6>
 
             <!-- Manager Comments -->
@@ -489,22 +427,26 @@
               <div class="timeline-line"></div>
               <div class="timeline-indicator" 
                    [ngClass]="{
-                     'bg-success text-white': selectedRequest.managerComments,
-                     'bg-warning text-dark': !selectedRequest.managerComments && (selectedRequest.status?.toUpperCase() === 'SUBMITTED'),
-                     'bg-secondary text-white': !selectedRequest.managerComments && (selectedRequest.status?.toUpperCase() === 'DRAFT')
+                     'bg-success text-white': selectedRequest.managerComments && (selectedRequest.status?.toUpperCase() !== 'REJECTED'),
+                     'bg-danger text-white': selectedRequest.managerComments && (selectedRequest.status?.toUpperCase() === 'REJECTED'),
+                     'bg-warning text-dark': !selectedRequest.managerComments && (selectedRequest.status?.toUpperCase() === 'SUBMITTED')
                    }">
                 <i class="bi" [ngClass]="selectedRequest.managerComments ? 'bi-check2' : 'bi-dash'"></i>
               </div>
               <div class="flex-grow-1">
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="fw-semibold text-dark small">Manager Review</span>
-                  <span class="badge bg-white text-muted border extra-small" *ngIf="selectedRequest.managerComments">Approved</span>
+                  <span class="badge bg-white text-muted border extra-small" 
+                        *ngIf="selectedRequest.managerComments"
+                        [ngClass]="selectedRequest.status?.toUpperCase() === 'REJECTED' ? 'text-danger' : 'text-success'">
+                    {{ selectedRequest.status?.toUpperCase() === 'REJECTED' ? 'Rejected' : 'Approved' }}
+                  </span>
                 </div>
                 <p class="text-muted small mt-1 mb-0 bg-white p-2 rounded border-dashed" *ngIf="selectedRequest.managerComments">
                   "{{ selectedRequest.managerComments }}"
                 </p>
                 <p class="text-muted-custom extra-small mt-1 mb-0 italic" *ngIf="!selectedRequest.managerComments">
-                  {{ selectedRequest.status?.toUpperCase() === 'SUBMITTED' ? 'Awaiting manager approval...' : 'Not yet reviewed.' }}
+                  Awaiting manager decision...
                 </p>
               </div>
             </div>
@@ -514,8 +456,7 @@
               <div class="timeline-indicator" 
                    [ngClass]="{
                      'bg-success text-white': selectedRequest.status?.toUpperCase() === 'FINANCE_APPROVED',
-                     'bg-danger text-white': selectedRequest.status?.toUpperCase() === 'REJECTED' && selectedRequest.financeComments,
-                     'bg-secondary text-white': selectedRequest.status?.toUpperCase() !== 'FINANCE_APPROVED' && selectedRequest.status?.toUpperCase() !== 'REJECTED'
+                     'bg-secondary text-white': selectedRequest.status?.toUpperCase() !== 'FINANCE_APPROVED'
                    }">
                 <i class="bi" [ngClass]="selectedRequest.status?.toUpperCase() === 'FINANCE_APPROVED' ? 'bi-check2' : 'bi-dash'"></i>
               </div>
