@@ -128,7 +128,7 @@ export class ManagerApprovalComponent implements OnInit {
         pending++;
       } else if (status === 'MANAGER_APPROVED' || status === 'FINANCE_APPROVED' || status === 'COMPLETED') {
         approved++;
-      } else if (status === 'REJECTED') {
+      } else if (status === 'MANAGER_REJECTED') {
         rejected++;
       }
     });
@@ -162,7 +162,7 @@ export class ManagerApprovalComponent implements OnInit {
         } else if (filter === 'APPROVED') {
           return reqStatus === 'MANAGER_APPROVED' || reqStatus === 'FINANCE_APPROVED' || reqStatus === 'COMPLETED';
         } else if (filter === 'REJECTED') {
-          return reqStatus === 'REJECTED';
+          return reqStatus === 'MANAGER_REJECTED';
         }
         return true;
       });

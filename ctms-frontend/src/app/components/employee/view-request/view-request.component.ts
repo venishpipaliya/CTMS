@@ -160,23 +160,36 @@ export class ViewRequestComponent implements OnInit {
   }
 
   applyFilters() {
-    this.filteredRequests = this.requests.filter(req => {
+  this.filteredRequests = this.requests.filter(req => {
 
-      const matchesSearch =
-        req.destination
-          ?.toLowerCase()
-          .includes(this.searchQuery.toLowerCase()) ||
-        req.purpose
-          ?.toLowerCase()
-          .includes(this.searchQuery.toLowerCase());
+    const matchesSearch =
+      req.destination
+        ?.toLowerCase()
+        .includes(this.searchQuery.toLowerCase()) ||
 
-      const matchesStatus =
-        this.selectedStatusFilter === 'ALL' ||
-        req.status?.toUpperCase() === this.selectedStatusFilter;
+      req.purpose
+        ?.toLowerCase()
+        .includes(this.searchQuery.toLowerCase());
 
-      return matchesSearch && matchesStatus;
-    });
-  }
+    let matchesStatus = false;
+
+    if (this.selectedStatusFilter === 'ALL') {
+      matchesStatus = true;
+
+    } else if (this.selectedStatusFilter === 'REJECTED') {
+      matchesStatus =
+        req.status === 'MANAGER_REJECTED' ||
+        req.status === 'FINANCE_REJECTED';
+
+    } else {
+      matchesStatus =
+        req.status?.toUpperCase() ===
+        this.selectedStatusFilter;
+    }
+
+    return matchesSearch && matchesStatus;
+  });
+}
 
   // =========================
   // CREATE NEW

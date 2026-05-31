@@ -9,6 +9,8 @@ import { EmployeeDashboardComponent } from './components/employee/employee-dashb
 import { NewRequestComponent } from './components/employee/new-request/new-request.component';
 import { ManagerLayoutComponent } from './components/layouts/manager-layout/manager-layout.component';
 import { ManagerApprovalComponent } from './components/manager/manager-approval/manager-approval.component';
+import { FinanceLayoutComponent } from './components/layouts/finance-layout/finance-layout.component';
+import { FinanceApprovedComponent } from './components/finance/finance-approved/finance-approved.component';
 
 
 export const routes: Routes = [
@@ -40,6 +42,15 @@ export const routes: Routes = [
     children: [
       {path: '', redirectTo: 'manager-approval', pathMatch: 'full' },
       {path: 'manager-approval', component: ManagerApprovalComponent },
+    ],
+  },
+
+  {
+    path: 'finance',
+    component: FinanceLayoutComponent,
+    children: [
+      {path: '', redirectTo: 'finance-approval', pathMatch: 'full' },
+      {path: 'finance-approval', component: FinanceApprovedComponent },
     ],
   },
 ];

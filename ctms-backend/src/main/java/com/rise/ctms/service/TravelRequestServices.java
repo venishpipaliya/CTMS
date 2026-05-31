@@ -202,7 +202,7 @@ public TravelResponseDto cancleRequest(Long id) {
 				throw new ResourceConflictException("Only submitted requests can be approved. Current status: " + travelRequest.getStatus());
 			}
 			
-			travelRequest.setStatus(RequestStatus.REJECTED);
+			travelRequest.setStatus(RequestStatus.MANAGER_REJECTED);
 			travelRequest.setManagerComments(dto.getComment());
 			travelRequest.setManagerActionAt(LocalDateTime.now());
 			travelRequest.setUpdatedAt(LocalDateTime.now());
@@ -213,6 +213,16 @@ public TravelResponseDto cancleRequest(Long id) {
 			
 			return TravelResponseDto.from(approvedRequest);
 		}
+		
+		// get finance request
+		
+		public List<TravelResponseDto> getFinanceRequests() {
+			return travelRequestRepository.getFinanceRequests().stream()
+					.map(TravelResponseDto::from)
+					.toList();
+		}
+		
+		
 		
 		// finance approval feature
 		
@@ -254,7 +264,7 @@ public TravelResponseDto cancleRequest(Long id) {
 						.orElseThrow(() -> new ResourceConflictException("Finance user not found ")));
 				
 				
-				travelRequest.setStatus(RequestStatus.REJECTED);
+				travelRequest.setStatus(RequestStatus.FINANCE_REJECTED);
 				travelRequest.setFinanceComments(dto.getComment());
 				travelRequest.setFinanceActionAt(LocalDateTime.now());
 				travelRequest.setUpdatedAt(LocalDateTime.now());

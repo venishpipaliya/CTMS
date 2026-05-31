@@ -101,6 +101,14 @@ public class TravelRequestController {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(ApiResponse.success(responseDto, "Manager reject request successfully"));
 	}
+	
+	// finance
+	
+	@GetMapping("/getFinanceRequests")
+	public ResponseEntity<ApiResponse<List<TravelResponseDto>>> getFinanceRequests(){
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(ApiResponse.success(travelRequestServices.getFinanceRequests(), "Get finance requests successfully"));
+	}
 		
 	// finance approval feature
 	@PostMapping("/{requestId}/finance/approve")

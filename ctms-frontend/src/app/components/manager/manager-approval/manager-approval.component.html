@@ -218,7 +218,7 @@
                         'status-submitted': req.status?.toUpperCase() === 'SUBMITTED',
                         'status-manager-approved': req.status?.toUpperCase() === 'MANAGER_APPROVED',
                         'status-approved': req.status?.toUpperCase() === 'FINANCE_APPROVED' || req.status?.toUpperCase() === 'COMPLETED',
-                        'status-rejected': req.status?.toUpperCase() === 'REJECTED',
+                        'status-rejected': req.status?.toUpperCase() === 'MANAGER_REJECTED' || req.status?.toUpperCase() === 'FINANCE_REJECTED' || req.status?.toUpperCase() === 'REJECTED',
                         'status-cancelled': req.status?.toUpperCase() === 'CANCELLED'
                       }">
                   {{ 
@@ -288,7 +288,7 @@
         <!-- Target Request Summary Card -->
         <div class="request-summary-card mb-3.5 p-3 rounded-3 bg-light border-dashed">
           <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
-            <span class="fw-bold text-dark-blue small">TR-{{ selectedRequest?.id }}</span>
+            <span class="fw-bold text-dark-blue small">{{ selectedRequest?.id }}</span>
             <span class="fw-bold text-dark small">{{ selectedRequest?.estimatedCost | currency:'INR' }}</span>
           </div>
           <div class="small">
@@ -341,7 +341,7 @@
       <!-- Modal Header -->
       <div class="modal-header-custom d-flex justify-content-between align-items-center px-4 py-3 bg-light border-bottom">
         <h5 class="modal-title fw-bold text-primary mb-0">
-          Request Details (TR-{{ selectedRequest?.id }})
+          Request Details ({{ selectedRequest?.id }})
         </h5>
         <button type="button" class="btn-close" (click)="closeDetailsModal()"></button>
       </div>
@@ -425,12 +425,12 @@
             <!-- Manager Comments -->
             <div class="d-flex gap-3 position-relative timeline-step">
               <div class="timeline-line"></div>
-              <div class="timeline-indicator" 
-                   [ngClass]="{
-                     'bg-success text-white': selectedRequest.managerComments && (selectedRequest.status?.toUpperCase() !== 'REJECTED'),
-                     'bg-danger text-white': selectedRequest.managerComments && (selectedRequest.status?.toUpperCase() === 'REJECTED'),
+              <div class="timeline-indicator" [ngClass]="{
+                     'bg-success text-white': selectedRequest.managerComments && (selectedRequest.status?.toUpperCase() !== 'MANAGER_REJECTED'),
+                     'bg-danger text-white': selectedRequest.managerComments && (selectedRequest.status?.toUpperCase() === 'MANAGER_REJECTED'),
                      'bg-warning text-dark': !selectedRequest.managerComments && (selectedRequest.status?.toUpperCase() === 'SUBMITTED')
                    }">
+              
                 <i class="bi" [ngClass]="selectedRequest.managerComments ? 'bi-check2' : 'bi-dash'"></i>
               </div>
               <div class="flex-grow-1">
@@ -438,8 +438,8 @@
                   <span class="fw-semibold text-dark small">Manager Review</span>
                   <span class="badge bg-white text-muted border extra-small" 
                         *ngIf="selectedRequest.managerComments"
-                        [ngClass]="selectedRequest.status?.toUpperCase() === 'REJECTED' ? 'text-danger' : 'text-success'">
-                    {{ selectedRequest.status?.toUpperCase() === 'REJECTED' ? 'Rejected' : 'Approved' }}
+                        [ngClass]="selectedRequest.status?.toUpperCase() === 'MANAGER_REJECTED' ? 'text-danger' : 'text-success'">
+                    {{ selectedRequest.status?.toUpperCase() === 'MANAGER_REJECTED' ? 'Rejected' : 'Approved' }}
                   </span>
                 </div>
                 <p class="text-muted small mt-1 mb-0 bg-white p-2 rounded border-dashed" *ngIf="selectedRequest.managerComments">
@@ -453,35 +453,37 @@
 
             <!-- Finance Comments -->
             <div class="d-flex gap-3 position-relative timeline-step">
-              <div class="timeline-indicator" 
-                   [ngClass]="{
-                     'bg-success text-white': selectedRequest.status?.toUpperCase() === 'FINANCE_APPROVED',
-                     'bg-secondary text-white': selectedRequest.status?.toUpperCase() !== 'FINANCE_APPROVED'
+              <div class="timeline-indicator" [ngClass]="{
+                     'bg-success text-white': selectedRequest.financeComments && (selectedRequest.status?.toUpperCase() !== 'FINANCE_REJECTED'),
+                     'bg-danger text-white': selectedRequest.financeComments && (selectedRequest.status?.toUpperCase() === 'FINANCE_REJECTED'),
+                     'bg-warning text-dark': !selectedRequest.financeComments && (selectedRequest.status?.toUpperCase() === 'SUBMITTED')
                    }">
-                <i class="bi" [ngClass]="selectedRequest.status?.toUpperCase() === 'FINANCE_APPROVED' ? 'bi-check2' : 'bi-dash'"></i>
+              
+                <i class="bi" [ngClass]="selectedRequest.financeComments ? 'bi-check2' : 'bi-dash'"></i>
               </div>
               <div class="flex-grow-1">
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="fw-semibold text-dark small">Finance Review</span>
-                  <span class="badge bg-white text-muted border extra-small" *ngIf="selectedRequest.status?.toUpperCase() === 'FINANCE_APPROVED'">Processed</span>
+                  <span class="badge bg-white text-muted border extra-small" 
+                        *ngIf="selectedRequest.financeComments"
+                        [ngClass]="selectedRequest.status?.toUpperCase() === 'FINANCE_REJECTED' ? 'text-danger' : 'text-success'">
+                    {{ selectedRequest.status?.toUpperCase() === 'FINANCE_REJECTED' ? 'Rejected' : 'Approved' }}
+                  </span>
                 </div>
                 <p class="text-muted small mt-1 mb-0 bg-white p-2 rounded border-dashed" *ngIf="selectedRequest.financeComments">
                   "{{ selectedRequest.financeComments }}"
                 </p>
                 <p class="text-muted-custom extra-small mt-1 mb-0 italic" *ngIf="!selectedRequest.financeComments">
-                  {{ selectedRequest.status?.toUpperCase() === 'MANAGER_APPROVED' ? 'Awaiting finance approval...' : 'Not yet reviewed by Finance.' }}
+                  Awaiting finance decision...
                 </p>
               </div>
             </div>
-          </div>
 
         </div>
 
         <!-- Modal Actions Footer -->
         <div class="d-flex justify-content-end mt-4 pt-3 border-top">
-          <button type="button" class="btn btn-primary px-4 rounded-3" (click)="closeDetailsModal()">
-            Close
-          </button>
+          <button type="button" class="btn btn-primary px-4 rounded-3" (click)="closeDetailsModal()">Close</button>
         </div>
       </div>
     </div>
