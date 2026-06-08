@@ -93,7 +93,7 @@ public class TravelRequestServices {
 		User employee = travelRequest.getEmployee();
 		if(employee.getManager() == null) {
 			throw new ResourceConflictException("Employee does not have a manager assigned. Cannot submit request.");
-		}
+		} 
 		
 		travelRequest.setStatus(RequestStatus.SUBMITTED);
 		travelRequest.setManagerApprover(employee.getManager());

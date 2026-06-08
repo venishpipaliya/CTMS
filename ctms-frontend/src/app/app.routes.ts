@@ -27,9 +27,10 @@ export const routes: Routes = [
 
   {
     path: 'employee',
+    title: 'Employee',
     component: EmployeeLayoutComponent,
     children: [
-      {path: '', redirectTo: 'employee-dashboard', pathMatch: 'full' },
+      {path: '', redirectTo: 'view-request', pathMatch: 'full' },
       {path: 'employee-dashboard', component: EmployeeDashboardComponent },
       {path: 'view-request', component: ViewRequestComponent },
       {path: 'new-request', component: NewRequestComponent},
@@ -38,6 +39,7 @@ export const routes: Routes = [
 
   {
     path: 'manager',
+    title: 'Manager',
     component: ManagerLayoutComponent,
     children: [
       {path: '', redirectTo: 'manager-approval', pathMatch: 'full' },
@@ -47,6 +49,7 @@ export const routes: Routes = [
 
   {
     path: 'finance',
+    title: 'Finance',
     component: FinanceLayoutComponent,
     children: [
       {path: '', redirectTo: 'finance-approval', pathMatch: 'full' },
